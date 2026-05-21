@@ -13,31 +13,20 @@
   <style>
 
     body {
-
       background: #0f172a;
-
       color: white;
-
       font-family: Arial, sans-serif;
-
       padding: 40px;
-
       text-align: center;
-
     }
 
     h1 {
-
       font-size: 42px;
-
       margin-bottom: 30px;
-
     }
 
     .stats {
-
       display: grid;
-
       grid-template-columns:
         repeat(auto-fit, minmax(220px, 1fr));
 
@@ -46,94 +35,60 @@
       max-width: 1000px;
 
       margin: auto;
-
     }
 
     .card {
-
       background: #1e293b;
-
       padding: 25px;
-
       border-radius: 16px;
-
       box-shadow:
         0 0 10px rgba(0,0,0,0.3);
-
     }
 
     .card h2 {
-
       margin-bottom: 10px;
-
       color: #38bdf8;
-
     }
 
     .value {
-
       font-size: 36px;
-
       font-weight: bold;
-
     }
 
     .sessions {
-
       margin-top: 50px;
-
       max-width: 1000px;
-
       margin-left: auto;
-
       margin-right: auto;
-
       text-align: left;
-
     }
 
     .session {
-
       background: #1e293b;
-
       padding: 15px;
-
       border-radius: 12px;
-
       margin-bottom: 15px;
-
     }
 
     .win {
-
       border-left: 5px solid #22c55e;
-
     }
 
     .loss {
-
       border-left: 5px solid #ef4444;
-
     }
 
     .be {
-
       border-left: 5px solid #facc15;
-
     }
 
     .pending {
-
       border-left: 5px solid #38bdf8;
-
     }
 
     .updated {
-
       margin-top: 30px;
-
       color: #94a3b8;
-
     }
 
   </style>
@@ -194,6 +149,7 @@
 
   <script>
 
+    // ⚛️ RAILWAY API
     const API =
       "https://qb-production-f306.up.railway.app/stats";
 
@@ -224,13 +180,14 @@
         document.getElementById("winrate")
           .innerText = data.winRate + "%";
 
+        // LAST UPDATED
         document.getElementById("updated")
           .innerText =
             new Date(
               data.lastUpdated
             ).toLocaleString();
 
-        // SESSION LIST
+        // SESSIONS
         const sessionsList =
           document.getElementById(
             "sessionsList"
@@ -238,62 +195,66 @@
 
         sessionsList.innerHTML = "";
 
-        // FIX reverse mutation bug
-        const sessions =
-          [...data.sessions].reverse();
+        // FIXED reverse bug
+        [...data.sessions]
+          .reverse()
+          .forEach(session => {
 
-        sessions.forEach(session => {
+            let className = "pending";
 
-          let className = "pending";
+            if (session.result === "WIN")
+              className = "win";
 
-          if (session.result === "WIN")
-            className = "win";
+            if (session.result === "LOSS")
+              className = "loss";
 
-          if (session.result === "LOSS")
-            className = "loss";
+            if (session.result === "BE")
+              className = "be";
 
-          if (session.result === "BE")
-            className = "be";
+            sessionsList.innerHTML += `
 
-          sessionsList.innerHTML += `
+              <div class="session ${className}">
 
-            <div class="session ${className}">
+                <h3>
+                  ${session.date}
+                  — ${session.result}
+                </h3>
 
-              <h3>
-                ${session.date}
-                — ${session.result}
-              </h3>
+                <p>
+                  <strong>Bias:</strong>
+                  ${session.bias}
+                </p>
 
-              <p>
-                <strong>Bias:</strong>
-                ${session.bias}
-              </p>
+                <p>
+                  <strong>Points:</strong>
+                  ${session.pts}
+                </p>
 
-              <p>
-                <strong>Points:</strong>
-                ${session.pts}
-              </p>
+                <p>
+                  ${session.note}
+                </p>
 
-              <p>
-                ${session.note}
-              </p>
+              </div>
 
-            </div>
+            `;
 
-          `;
-
-        });
+          });
 
       } catch (err) {
 
-        console.error(err);
+        console.error(
+          "Stats loading error:",
+          err
+        );
 
       }
 
     }
 
+    // INITIAL LOAD
     loadStats();
 
+    // AUTO REFRESH
     setInterval(loadStats, 5000);
 
   </script>
