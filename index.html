@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8" />
 
   <meta
@@ -13,12 +11,6 @@
   <title>Quantum Bias Stats</title>
 
   <style>
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
 
     body {
 
@@ -38,7 +30,7 @@
 
       font-size: 42px;
 
-      margin-bottom: 40px;
+      margin-bottom: 30px;
 
     }
 
@@ -51,7 +43,7 @@
 
       gap: 20px;
 
-      max-width: 1100px;
+      max-width: 1000px;
 
       margin: auto;
 
@@ -68,28 +60,13 @@
       box-shadow:
         0 0 10px rgba(0,0,0,0.3);
 
-      transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-
-    }
-
-    .card:hover {
-
-      transform: translateY(-5px);
-
-      box-shadow:
-        0 0 20px rgba(56,189,248,0.2);
-
     }
 
     .card h2 {
 
-      margin-bottom: 12px;
+      margin-bottom: 10px;
 
       color: #38bdf8;
-
-      font-size: 20px;
 
     }
 
@@ -101,19 +78,9 @@
 
     }
 
-    .updated {
-
-      margin-top: 30px;
-
-      color: #94a3b8;
-
-      font-size: 14px;
-
-    }
-
     .sessions {
 
-      margin-top: 60px;
+      margin-top: 50px;
 
       max-width: 1000px;
 
@@ -125,46 +92,15 @@
 
     }
 
-    .sessions h2 {
-
-      margin-bottom: 25px;
-
-      text-align: center;
-
-    }
-
     .session {
 
       background: #1e293b;
 
-      padding: 18px;
+      padding: 15px;
 
       border-radius: 12px;
 
       margin-bottom: 15px;
-
-      transition:
-        transform 0.2s ease;
-
-    }
-
-    .session:hover {
-
-      transform: scale(1.01);
-
-    }
-
-    .session h3 {
-
-      margin-bottom: 10px;
-
-    }
-
-    .session p {
-
-      margin: 5px 0;
-
-      color: #cbd5e1;
 
     }
 
@@ -192,35 +128,20 @@
 
     }
 
-    @media (max-width: 600px) {
+    .updated {
 
-      body {
+      margin-top: 30px;
 
-        padding: 20px;
-
-      }
-
-      h1 {
-
-        font-size: 30px;
-
-      }
-
-      .value {
-
-        font-size: 28px;
-
-      }
+      color: #94a3b8;
 
     }
 
   </style>
-
 </head>
 
 <body>
 
-  <h1>⚛️ Quantum Bias Stats</h1>
+  <h1>📊 Quantum Bias Stats</h1>
 
   <div class="stats">
 
@@ -317,7 +238,7 @@
 
         sessionsList.innerHTML = "";
 
-        // Clone to avoid reverse() mutation bug
+        // FIX reverse mutation bug
         const sessions =
           [...data.sessions].reverse();
 
@@ -365,19 +286,14 @@
 
       } catch (err) {
 
-        console.error(
-          "Stats loading error:",
-          err
-        );
+        console.error(err);
 
       }
 
     }
 
-    // Initial load
     loadStats();
 
-    // Auto refresh every 5s
     setInterval(loadStats, 5000);
 
   </script>
