@@ -1,4 +1,3 @@
-```html
 <script>
 
 const API = "https://qb-production-f306.up.railway.app/stats";
@@ -19,10 +18,6 @@ function showPage(page) {
   if (target) {
     target.classList.add("active");
   }
-
-  document
-    .querySelectorAll(".nav-links a")
-    .forEach(a => a.classList.remove("active"));
 
 }
 
@@ -142,6 +137,10 @@ async function loadStats() {
 
     data.sessions.forEach(session => {
 
+      if (session.result === "PENDING") {
+        return;
+      }
+
       let badge = `
         <span class="badge-loss">
           ${session.result}
@@ -157,18 +156,11 @@ async function loadStats() {
         `;
       }
 
-      if (session.result === "PENDING") {
-        return;
-      }
-
       table.innerHTML += `
         <tr>
           <td>${session.date}</td>
-
           <td>${session.bias}</td>
-
           <td>${badge}</td>
-
           <td>${session.pts}</td>
         </tr>
       `;
@@ -195,4 +187,7 @@ loadStats();
 setInterval(loadStats, 5000);
 
 </script>
-```
+
+</body>
+</html>
+
