@@ -1,936 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quantum Bias — Dominate the Market Before the Open</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-:root {
-  --black: #07070B; --dark: #0B0B0F; --navy: #0F172A;
-  --purple: #7C3AED; --purple-light: #A78BFA; --purple-dim: rgba(124,58,237,0.15);
-  --cyan: #22D3EE; --text: #E2E8F0; --muted: #64748B;
-  --border: rgba(124,58,237,0.2); --glow: 0 0 40px rgba(124,58,237,0.3);
-}
-* { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior: smooth; }
-body { background:var(--black); color:var(--text); font-family:'Inter',sans-serif; font-weight:300; overflow-x:hidden; }
-body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events:none; z-index:1000; opacity:.4; }
-::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-track{background:var(--dark)} ::-webkit-scrollbar-thumb{background:var(--purple);border-radius:2px}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quantum Bias Stats</title>
 
-/* NAV */
-nav { position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:20px 60px;background:rgba(7,7,11,0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(124,58,237,0.1);transition:padding .3s; }
-.nav-logo { font-family:'Syne',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.5px;color:#fff;cursor:pointer; }
-.nav-logo span { color:var(--purple-light); }
-.nav-links { display:flex;gap:36px; }
-.nav-links a { font-size:13px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s; }
-.nav-links a:hover { color:var(--text); }
-.nav-links a.active { color:var(--purple-light); }
-.nav-links a.nav-bias-link { color:var(--purple-light);border:1px solid var(--border);padding:5px 12px;border-radius:2px; }
-.nav-links a.nav-bias-link:hover { background:var(--purple-dim); }
-.nav-cta { background:var(--purple);color:#fff;border:none;padding:10px 24px;font-family:'Syne',sans-serif;font-size:13px;font-weight:600;letter-spacing:.05em;border-radius:2px;cursor:pointer;transition:all .2s;text-decoration:none; }
-.nav-cta:hover { background:var(--purple-light);color:var(--black);transform:translateY(-1px); }
+  <style>
+    body {
+      background: #0f172a;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      text-align: center;
+    }
 
-/* PAGES */
-.page { display:none;padding-top:80px;min-height:100vh; }
-.page.active { display:block; }
+    h1 {
+      font-size: 42px;
+      margin-bottom: 30px;
+    }
 
-/* HERO */
-.hero { min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 40px 60px;position:relative;overflow:hidden; }
-.hero-grid { position:absolute;inset:0;background-image:linear-gradient(rgba(124,58,237,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.06) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 60% at 50% 50%,black 30%,transparent 100%); }
-.hero-orb { position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none; }
-.hero-orb-1 { width:600px;height:600px;background:rgba(124,58,237,0.12);top:-150px;left:50%;transform:translateX(-50%);animation:orb-drift 8s ease-in-out infinite; }
-.hero-orb-2 { width:300px;height:300px;background:rgba(34,211,238,0.06);bottom:100px;right:10%;animation:orb-drift 11s ease-in-out infinite reverse; }
-@keyframes orb-drift { 0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-30px)} }
-.hero-eyebrow { font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--purple-light);margin-bottom:28px;opacity:0;animation:fade-up .8s .2s forwards; }
-.hero h1 { font-family:'Syne',sans-serif;font-size:clamp(48px,7vw,96px);font-weight:800;line-height:1;letter-spacing:-2px;color:#fff;max-width:900px;margin-bottom:28px;opacity:0;animation:fade-up .8s .4s forwards; }
-.hero h1 .highlight { background:linear-gradient(135deg,var(--purple-light),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
-.hero-sub { font-size:18px;color:var(--muted);max-width:560px;line-height:1.7;margin-bottom:48px;opacity:0;animation:fade-up .8s .6s forwards; }
-.hero-actions { display:flex;gap:16px;flex-wrap:wrap;justify-content:center;opacity:0;animation:fade-up .8s .8s forwards; }
-.btn-primary { background:var(--purple);color:#fff;border:none;padding:16px 40px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;letter-spacing:.03em;border-radius:2px;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-block;position:relative;overflow:hidden; }
-.btn-primary:hover { background:#6D28D9;transform:translateY(-2px);box-shadow:var(--glow); }
-.btn-ghost { background:transparent;color:var(--text);border:1px solid var(--border);padding:16px 40px;font-family:'Syne',sans-serif;font-size:15px;font-weight:600;letter-spacing:.03em;border-radius:2px;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-block; }
-.btn-ghost:hover { border-color:var(--purple-light);color:var(--purple-light); }
-.hero-stats { display:flex;gap:60px;margin-top:80px;opacity:0;animation:fade-up .8s 1.1s forwards; }
-.hero-stat { text-align:center; }
-.hero-stat-num {
-  font-family:'Syne',sans-serif;
-  font-size:40px;
-  font-weight:800;
-  color:#fff;
-  letter-spacing:-1px;
-  line-height:1;
-  white-space:nowrap;
-}
-.hero-stat-num span { color:var(--purple-light); }
-.hero-stat-label { font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:8px; }
-.hero-scroll { position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fade-up .8s 1.4s forwards; }
-.hero-scroll span { font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted); }
-.scroll-line { width:1px;height:40px;background:linear-gradient(var(--purple),transparent);animation:scroll-pulse 2s ease-in-out infinite; }
-@keyframes scroll-pulse { 0%,100%{opacity:.3}50%{opacity:1} }
-@keyframes fade-up { from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)} }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
 
-/* SECTIONS */
-section { padding:100px 60px;max-width:1200px;margin:0 auto; }
-.section-tag { font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--purple-light);margin-bottom:20px; }
-.section-title { font-family:'Syne',sans-serif;font-size:clamp(32px,4vw,56px);font-weight:800;letter-spacing:-1.5px;color:#fff;line-height:1.1;margin-bottom:20px; }
-.section-sub { font-size:17px;color:var(--muted);line-height:1.7;max-width:560px; }
-.divider { height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:0 60px; }
+    .card {
+      background: #1e293b;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
 
-/* PROBLEM */
-.problem-section { background:linear-gradient(180deg,var(--black) 0%,var(--navy) 50%,var(--black) 100%);padding:0; }
-.problem-inner { max-width:1200px;margin:0 auto;padding:100px 60px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center; }
-.problem-visual { position:relative;height:320px; }
-.problem-items { display:flex;flex-direction:column;gap:24px; }
-.problem-item { display:flex;gap:16px;align-items:flex-start;padding:20px;border:1px solid rgba(239,68,68,0.1);border-radius:4px;background:rgba(239,68,68,0.03); }
-.problem-icon { width:32px;height:32px;border-radius:2px;background:rgba(239,68,68,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px; }
-.problem-item h4 { font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:4px; }
-.problem-item p { font-size:13px;color:var(--muted);line-height:1.6; }
+    .card h2 {
+      margin-bottom: 10px;
+      color: #38bdf8;
+    }
 
-/* SOLUTION */
-.solution-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:60px;border:1px solid var(--border);border-radius:4px;overflow:hidden; }
-.solution-card { background:var(--dark);padding:36px 32px;position:relative;transition:background .3s; }
-.solution-card::before { content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--cyan));opacity:0;transition:opacity .3s; }
-.solution-card:hover { background:#0F0F15; }
-.solution-card:hover::before { opacity:1; }
-.solution-card-num { font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;color:var(--purple-light);margin-bottom:16px; }
-.solution-card h3 { font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:10px;letter-spacing:-.3px; }
-.solution-card p { font-size:14px;color:var(--muted);line-height:1.7; }
-.solution-card-icon { width:44px;height:44px;border-radius:4px;background:var(--purple-dim);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:20px; }
+    .value {
+      font-size: 36px;
+      font-weight: bold;
+    }
 
-/* STATS */
-.stats-section { background:var(--navy);padding:0; }
-.stats-inner { max-width:1200px;margin:0 auto;padding:100px 60px; }
-.stats-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin:60px 0; }
-.stat-card {
-  background:rgba(7,7,11,0.8);
-  border:1px solid var(--border);
-  padding:40px 20px 36px;
-  text-align:center;
-  position:relative;
-  transition:transform .2s,box-shadow .2s;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-}
-.stat-card:hover { transform:translateY(-4px);box-shadow:var(--glow); }
-.stat-card::after { content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--cyan)); }
-.stat-value {
-  font-family:'Syne',sans-serif;
-  font-size:clamp(28px,2.8vw,44px);
-  font-weight:800;
-  letter-spacing:-1px;
-  color:#fff;
-  line-height:1.1;
-  margin-bottom:10px;
-  width:100%;
-  text-align:center;
-  white-space:nowrap;
-}
-.stat-label { font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;text-align:center; }
-.stat-desc { font-size:11px;color:var(--muted);line-height:1.5;text-align:center;max-width:130px; }
+    .sessions {
+      margin-top: 50px;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+    }
 
-/* TABLE */
-.perf-table { width:100%;border-collapse:collapse;margin-top:20px; }
-.perf-table th { font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);padding:12px 16px;text-align:left;border-bottom:1px solid var(--border); }
-.perf-table td { padding:14px 16px;font-size:13px;border-bottom:1px solid rgba(124,58,237,0.06);color:var(--text); }
-.perf-table tr:hover td { background:rgba(124,58,237,0.04); }
-.badge-win { display:inline-block;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:#4ADE80;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;padding:3px 10px;border-radius:2px; }
-.badge-loss { display:inline-block;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#F87171;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;padding:3px 10px;border-radius:2px; }
+    .session {
+      background: #1e293b;
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
 
-/* OFFER */
-.offer-section { padding:0; }
-.offer-inner { max-width:800px;margin:0 auto;padding:100px 60px;text-align:center; }
-.offer-card { background:linear-gradient(145deg,#0F0F18,#0B0B0F);border:1px solid var(--border);border-radius:8px;padding:60px 48px;position:relative;overflow:hidden;margin-top:48px;box-shadow:0 0 80px rgba(124,58,237,0.15); }
-.offer-card::before { content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--cyan),var(--purple)); }
-.offer-badge { display:inline-block;background:var(--purple-dim);border:1px solid var(--border);color:var(--purple-light);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:6px 16px;border-radius:2px;margin-bottom:32px; }
-.offer-price { font-family:'Syne',sans-serif;font-size:72px;font-weight:800;letter-spacing:-3px;color:#fff;line-height:1; }
-.offer-price sup { font-size:28px;vertical-align:top;margin-top:12px;color:var(--muted); }
-.offer-price sub { font-size:20px;font-weight:400;color:var(--muted);letter-spacing:0; }
-.offer-period { font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-top:8px;margin-bottom:40px; }
-.offer-features { list-style:none;display:flex;flex-direction:column;gap:16px;margin-bottom:40px;text-align:left; }
-.offer-features li { display:flex;align-items:center;gap:14px;font-size:15px;color:var(--text); }
-.offer-check { width:20px;height:20px;background:rgba(124,58,237,0.2);border:1px solid var(--border);border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--purple-light);font-size:11px; }
+    .win {
+      border-left: 5px solid #22c55e;
+    }
 
-/* ABOUT */
-.about-section { padding:0; }
-.about-inner { max-width:1200px;margin:0 auto;padding:100px 60px; }
-.about-grid { display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-top:60px; }
-.about-text p { font-size:16px;color:var(--muted);line-height:1.85;margin-bottom:24px; }
-.about-text p strong { color:var(--text);font-weight:500; }
-.about-pillars { display:flex;flex-direction:column;gap:20px; }
-.pillar { padding:24px;border:1px solid var(--border);border-radius:4px;background:rgba(124,58,237,0.03);transition:border-color .2s; }
-.pillar:hover { border-color:rgba(124,58,237,0.4); }
-.pillar-icon { font-size:20px;margin-bottom:12px; }
-.pillar h4 { font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:6px; }
-.pillar p { font-size:13px;color:var(--muted);line-height:1.6; }
+    .loss {
+      border-left: 5px solid #ef4444;
+    }
 
-/* CONTACT */
-.contact-inner { max-width:700px;margin:0 auto;padding:100px 60px;text-align:center; }
-.contact-channels { display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin:48px 0; }
-.channel { background:var(--dark);border:1px solid var(--border);padding:36px 24px;text-align:center;transition:all .2s;cursor:pointer;text-decoration:none;display:block; }
-.channel:hover { background:#0F0F15;border-color:rgba(124,58,237,0.4);transform:translateY(-2px); }
-.channel-icon { font-size:28px;margin-bottom:12px; }
-.channel-label { font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px; }
-.channel-value { font-size:14px;color:var(--text); }
-.contact-form { margin-top:20px;text-align:left; }
-.form-group { margin-bottom:16px; }
-.form-label { display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px; }
-.form-input,.form-textarea { width:100%;background:var(--dark);border:1px solid var(--border);border-radius:2px;padding:14px 16px;font-family:'Inter',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color .2s; }
-.form-input:focus,.form-textarea:focus { border-color:var(--purple); }
-.form-textarea { resize:vertical;min-height:120px; }
+    .be {
+      border-left: 5px solid #facc15;
+    }
 
-/* FOOTER */
-footer { border-top:1px solid var(--border);padding:40px 60px;display:flex;align-items:center;justify-content:space-between; }
-.footer-logo { font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#fff; }
-.footer-logo span { color:var(--purple-light); }
-.footer-copy { font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted); }
-.footer-disclaimer { font-size:11px;color:var(--muted);max-width:400px;text-align:right;line-height:1.5; }
-
-/* RESULTS CHART */
-.results-chart { background:var(--dark);border:1px solid var(--border);border-radius:4px;padding:32px;margin-top:40px; }
-.chart-header { display:flex;justify-content:space-between;align-items:center;margin-bottom:24px; }
-.chart-title { font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff; }
-.chart-meta { font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--purple-light); }
-.bar-chart { display:flex;align-items:flex-end;gap:4px;height:160px; }
-.bar-wrap { flex:1;display:flex;flex-direction:column;align-items:center;gap:6px; }
-.bar { width:100%;border-radius:2px 2px 0 0;transition:opacity .2s; }
-.bar:hover { opacity:.7; }
-.bar-win { background:linear-gradient(0deg,#5B21B6,var(--purple-light)); }
-.bar-loss { background:linear-gradient(0deg,#7F1D1D,#F87171); }
-.bar-label { font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.05em;color:var(--muted);text-align:center; }
-
-/* TICKER */
-.ticker-wrap { border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(124,58,237,0.04);overflow:hidden;padding:14px 0; }
-.ticker { display:flex;gap:60px;animation:ticker-scroll 30s linear infinite;white-space:nowrap; }
-@keyframes ticker-scroll { from{transform:translateX(0)}to{transform:translateX(-50%)} }
-.ticker-item { display:flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.05em;color:var(--muted);flex-shrink:0; }
-.ticker-item .up { color:#4ADE80; }
-.ticker-item .dn { color:#F87171; }
-.ticker-sym { color:var(--text);font-weight:500; }
-
-/* BIAS PAGE */
-.bias-login-gate { min-height:80vh;display:flex;align-items:center;justify-content:center;flex-direction:column; }
-.bias-lock-card { background:linear-gradient(145deg,#0F0F18,#0B0B0F);border:1px solid var(--border);border-radius:8px;padding:56px 48px;width:100%;max-width:440px;text-align:center;box-shadow:0 0 80px rgba(124,58,237,0.12);position:relative;overflow:hidden; }
-.bias-lock-card::before { content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--cyan)); }
-.bias-lock-icon { width:64px;height:64px;margin:0 auto 24px;background:var(--purple-dim);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px; }
-.bias-lock-title { font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:10px; }
-.bias-lock-sub { font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:32px; }
-.bias-input-wrap { position:relative;margin-bottom:16px; }
-.bias-input { width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:2px;padding:13px 16px;font-family:'DM Mono',monospace;font-size:14px;color:var(--text);outline:none;letter-spacing:.08em;transition:border-color .2s; }
-.bias-input::placeholder { color:var(--muted); }
-.bias-input:focus { border-color:var(--purple); }
-.bias-input-label { display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);text-align:left;margin-bottom:6px; }
-.bias-login-err { font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.05em;color:#F87171;margin-bottom:12px;display:none; }
-.bias-dashboard { display:none;padding:40px 60px 80px;max-width:1200px;margin:0 auto; }
-.bias-header { display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:40px;flex-wrap:wrap;gap:20px; }
-.bias-date-tag { font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px; }
-.bias-direction-badge { display:inline-flex;align-items:center;gap:10px;padding:8px 20px;border-radius:2px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;letter-spacing:.03em;margin-top:12px; }
-.bias-direction-badge.bullish { background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:#4ADE80; }
-.bias-direction-badge.bearish { background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#F87171; }
-.bias-direction-badge.neutral { background:rgba(167,139,250,0.1);border:1px solid var(--border);color:var(--purple-light); }
-.bias-direction-dot { width:8px;height:8px;border-radius:50%;animation:pulse-dot 1.5s ease-in-out infinite; }
-.bullish .bias-direction-dot { background:#4ADE80; }
-.bearish .bias-direction-dot { background:#F87171; }
-.neutral .bias-direction-dot { background:var(--purple-light); }
-@keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)} }
-.bias-conviction { display:flex;align-items:center;gap:12px;margin-top:16px; }
-.conviction-label { font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;color:var(--muted); }
-.conviction-bar { flex:1;max-width:180px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden; }
-.conviction-fill { height:100%;border-radius:2px;background:linear-gradient(90deg,var(--purple),var(--cyan));transition:width .8s ease; }
-.conviction-pct { font-family:'DM Mono',monospace;font-size:12px;color:var(--purple-light); }
-.bias-logout-btn { background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;padding:8px 16px;border-radius:2px;cursor:pointer;transition:all .2s; }
-.bias-logout-btn:hover { border-color:rgba(239,68,68,0.4);color:#F87171; }
-.bias-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:2px; }
-.bias-card { background:var(--dark);border:1px solid var(--border);padding:32px 28px;position:relative;overflow:hidden;transition:border-color .2s,transform .2s; }
-.bias-card:hover { border-color:rgba(124,58,237,0.4);transform:translateY(-2px); }
-.bias-card::after { content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .3s; }
-.bias-card.card-sweep::after { background:linear-gradient(90deg,#22D3EE,#7C3AED); }
-.bias-card.card-trigger::after { background:linear-gradient(90deg,#4ADE80,#22D3EE); }
-.bias-card.card-invalid::after { background:linear-gradient(90deg,#F87171,#F59E0B); }
-.bias-card:hover::after { opacity:1; }
-.bias-card-num { font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:16px; }
-.card-sweep .bias-card-num { color:#22D3EE; }
-.card-trigger .bias-card-num { color:#4ADE80; }
-.card-invalid .bias-card-num { color:#F87171; }
-.bias-card-icon { font-size:28px;margin-bottom:14px; }
-.bias-card h3 { font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:12px;letter-spacing:-.3px; }
-.bias-zone-row { display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:2px;margin-bottom:8px; }
-.bias-zone-label { font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted); }
-.bias-zone-val { font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:#fff; }
-.bias-zone-val.bullish-val { color:#4ADE80; }
-.bias-zone-val.bearish-val { color:#F87171; }
-.bias-zone-val.neutral-val { color:#22D3EE; }
-.bias-card-note { font-size:12px;color:var(--muted);line-height:1.6;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.05); }
-.bias-context-band { background:rgba(124,58,237,0.04);border:1px solid var(--border);padding:28px 32px;margin-top:2px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px; }
-.ctx-item-label { font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px; }
-.ctx-item-val { font-size:14px;color:var(--text);font-weight:500; }
-.ctx-item-val.up { color:#4ADE80; }
-.ctx-item-val.dn { color:#F87171; }
-.bias-scenarios { display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:2px; }
-.scenario-box { padding:28px;background:var(--dark);border:1px solid var(--border); }
-.scenario-label { font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px; }
-.scenario-bull .scenario-label { color:#4ADE80; }
-.scenario-bear .scenario-label { color:#F87171; }
-.scenario-title { font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:8px; }
-.scenario-desc { font-size:13px;color:var(--muted);line-height:1.65; }
-.scenario-prob { display:inline-block;margin-top:12px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;padding:3px 10px;border-radius:2px; }
-.scenario-bull .scenario-prob { background:rgba(34,197,94,0.1);color:#4ADE80; }
-.scenario-bear .scenario-prob { background:rgba(239,68,68,0.1);color:#F87171; }
-.bias-disclaimer { margin-top:32px;padding:16px 20px;background:rgba(245,158,11,0.04);border:1px solid rgba(245,158,11,0.15);border-radius:2px; }
-.bias-disclaimer p { font-size:12px;color:rgba(245,158,11,0.7);line-height:1.6; }
-
-@media(max-width:900px){
-  nav{padding:16px 24px} .nav-links{display:none}
-  section{padding:60px 24px} .hero{padding:80px 24px 60px}
-  .hero-stats{gap:32px;flex-wrap:wrap;justify-content:center}
-  .stats-grid{grid-template-columns:repeat(2,1fr)} .solution-grid{grid-template-columns:1fr}
-  .problem-inner{grid-template-columns:1fr;gap:40px} .about-grid{grid-template-columns:1fr}
-  .contact-channels{grid-template-columns:1fr} .bias-grid{grid-template-columns:1fr}
-  .bias-context-band{grid-template-columns:1fr 1fr} .bias-scenarios{grid-template-columns:1fr}
-  .bias-dashboard{padding:24px 20px 60px}
-  footer{flex-direction:column;gap:16px;text-align:center} .footer-disclaimer{text-align:center}
-}
-</style>
+    .updated {
+      margin-top: 30px;
+      color: #94a3b8;
+    }
+  </style>
 </head>
+
 <body>
 
-<nav>
-  <div class="nav-logo" onclick="showPage('home')">Quantum<span>Bias</span></div>
-  <div class="nav-links">
-    <a href="#" class="active" onclick="showPage('home');return false;">Home</a>
-    <a href="#" onclick="showPage('results');return false;">Results</a>
-    <a href="#" onclick="showPage('about');return false;">About</a>
-    <a href="#" onclick="showPage('contact');return false;">Contact</a>
-    <a href="#" class="nav-bias-link" onclick="showPage('bias');return false;">🔒 Daily Bias</a>
-  </div>
-  <a href="#" class="nav-cta" onclick="showPage('subscribe');return false;">Subscribe</a>
-</nav>
+  <h1>📊 Quantum Bias Stats</h1>
 
-<!-- ══ HOME ══ -->
-<div id="page-home" class="page active">
-  <div class="ticker-wrap"><div class="ticker">
-    <div class="ticker-item"><span class="ticker-sym">NQ</span><span class="up">▲ +1.24%</span></div>
-    <div class="ticker-item"><span class="ticker-sym">ES</span><span class="up">▲ +0.87%</span></div>
-    <div class="ticker-item"><span class="ticker-sym">GC</span><span class="dn">▼ -0.33%</span></div>
-    <div class="ticker-item"><span class="ticker-sym">CL</span><span class="up">▲ +2.10%</span></div>
-    <div class="ticker-item"><span class="ticker-sym">BTC</span><span class="up">▲ +3.41%</span></div>
-    <div class="ticker-item"><span class="ticker-sym">EUR/USD</span><span class="dn">▼ -0.12%</span></div>
-    <div class="ticker-item"><span class="ticker-sym">TODAY'S BIAS</span><span class="up">● BULLISH</span></div>
-    <div class="ticker-item"><span class="ticker-sym">NQ</span><span class="up">▲ +1.24%</span></div>
-    <div class="ticker-item"><span class="ticker-sym">ES</span><span class="up">▲ +0.87%</span></div>
-    <div class="ticker-item"><span class="ticker-sym">GC</span><span class="dn">▼ -0.33%</span></div>
-    <div class="ticker-item"><span class="ticker-sym">CL</span><span class="up">▲ +2.10%</span></div>
-    <div class="ticker-item"><span class="ticker-sym">BTC</span><span class="up">▲ +3.41%</span></div>
-    <div class="ticker-item"><span class="ticker-sym">EUR/USD</span><span class="dn">▼ -0.12%</span></div>
-    <div class="ticker-item"><span class="ticker-sym">TODAY'S BIAS</span><span class="up">● BULLISH</span></div>
-  </div></div>
+  <div class="stats">
 
-  <div class="hero">
-    <div class="hero-grid"></div>
-    <div class="hero-orb hero-orb-1"></div>
-    <div class="hero-orb hero-orb-2"></div>
-    <p class="hero-eyebrow">Quantitative Analysis · Daily Bias · 63% Win Rate</p>
-    <h1>Dominate the market<br><span class="highlight">before the open.</span></h1>
-    <p class="hero-sub">Every morning, receive a clear bias built on real data and quantitative market analysis.</p>
-    <div class="hero-actions">
-      <a href="#" class="btn-primary" onclick="showPage('subscribe');return false;">Subscribe Now →</a>
-      <a href="#" class="btn-ghost" onclick="showPage('results');return false;">View Results</a>
+    <div class="card">
+      <h2>Wins</h2>
+      <div class="value" id="wins">0</div>
     </div>
-    <div class="hero-stats">
-      <div class="hero-stat"><div class="hero-stat-num">63<span>%</span></div><div class="hero-stat-label">Win Rate</div></div>
-      <div class="hero-stat"><div class="hero-stat-num">+<span>880</span></div><div class="hero-stat-label">NQ Points</div></div>
-      <div class="hero-stat"><div class="hero-stat-num">5<span>:1</span></div><div class="hero-stat-label">W/L Ratio</div></div>
+
+    <div class="card">
+      <h2>Losses</h2>
+      <div class="value" id="losses">0</div>
     </div>
-    <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
+
+    <div class="card">
+      <h2>Break Even</h2>
+      <div class="value" id="breakevens">0</div>
+    </div>
+
+    <div class="card">
+      <h2>Total Sessions</h2>
+      <div class="value" id="sessions">0</div>
+    </div>
+
+    <div class="card">
+      <h2>Total Points</h2>
+      <div class="value" id="points">0</div>
+    </div>
+
+    <div class="card">
+      <h2>Win Rate</h2>
+      <div class="value" id="winrate">0%</div>
+    </div>
+
   </div>
 
-  <div class="problem-section"><div class="problem-inner">
-    <div>
-      <p class="section-tag">// The Problem</p>
-      <h2 class="section-title" style="max-width:400px;">Trading without direction means losing before you even start.</h2>
-      <p class="section-sub" style="margin-bottom:40px;">Most traders enter the market with no clear bias. The result: hesitation, overtrading, and avoidable losses.</p>
-      <div class="problem-items">
-        <div class="problem-item"><div class="problem-icon">⚡</div><div><h4>Reacting instead of anticipating</h4><p>Without structure, you follow price instead of leading it. You react — and get stopped out.</p></div></div>
-        <div class="problem-item"><div class="problem-icon">🔄</div><div><h4>Chronic overtrading</h4><p>Uncertainty pushes you to take too many positions. Every entry becomes a gamble, not a decision.</p></div></div>
-        <div class="problem-item"><div class="problem-icon">📉</div><div><h4>Avoidable losses</h4><p>80% of trading losses come from a lack of context — not a lack of strategy.</p></div></div>
-      </div>
-    </div>
-    <div class="problem-visual">
-      <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
-        <defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#EF4444" stop-opacity="0.2"/><stop offset="100%" stop-color="#EF4444" stop-opacity="0"/></linearGradient></defs>
-        <line x1="0" y1="70" x2="400" y2="70" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-        <line x1="0" y1="140" x2="400" y2="140" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-        <line x1="0" y1="210" x2="400" y2="210" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-        <path d="M0 180 L30 160 L50 200 L70 130 L90 170 L110 90 L130 150 L150 80 L170 160 L190 110 L210 190 L230 120 L250 200 L270 140 L290 210 L310 130 L330 180 L350 100 L370 160 L400 140" fill="none" stroke="#EF4444" stroke-width="1.5" opacity="0.7"/>
-        <path d="M0 180 L30 160 L50 200 L70 130 L90 170 L110 90 L130 150 L150 80 L170 160 L190 110 L210 190 L230 120 L250 200 L270 140 L290 210 L310 130 L330 180 L350 100 L370 160 L400 140 L400 280 L0 280Z" fill="url(#cg)" opacity="0.5"/>
-        <text x="200" y="260" text-anchor="middle" font-family="'DM Mono',monospace" font-size="10" fill="rgba(100,116,139,0.8)" letter-spacing="2">NO BIAS — CHAOS</text>
-      </svg>
-    </div>
-  </div></div>
-
-  <div class="divider"></div>
-
-  <section>
-    <p class="section-tag">// The Solution</p>
-    <h2 class="section-title">What Quantum Bias<br>gives you every morning.</h2>
-    <p class="section-sub">A structured read of the market before the open — clear, actionable, noise-free.</p>
-    <div class="solution-grid">
-      <div class="solution-card"><div class="solution-card-num">01 / Direction</div><div class="solution-card-icon">🎯</div><h3>Probable Direction</h3><p>Bullish or bearish? We tell you upfront where the market is most likely to go, based on concrete data and market structure.</p></div>
-      <div class="solution-card"><div class="solution-card-num">02 / Structure</div><div class="solution-card-icon">📍</div><h3>Key Levels Identified</h3><p>Support, resistance, and zones of interest — mapped before the session to guide your entries and exits with precision.</p></div>
-      <div class="solution-card"><div class="solution-card-num">03 / Context</div><div class="solution-card-icon">🌐</div><h3>Global Market Context</h3><p>Macro, economic data, inter-market correlations. Everything you need to know before pressing the button.</p></div>
-      <div class="solution-card"><div class="solution-card-num">04 / Scenarios</div><div class="solution-card-icon">🔀</div><h3>Possible Scenarios</h3><p>If the market does X, what happens? We prepare both outcomes so you're never caught off guard.</p></div>
-    </div>
-  </section>
-
-  <div class="stats-section"><div class="stats-inner">
-    <p class="section-tag" style="text-align:center;">// Performance</p>
-    <h2 class="section-title" style="text-align:center;">Data. Not opinions.</h2>
-    <div class="stats-grid">
-      <div class="stat-card"><div class="stat-value">63%</div><div class="stat-label">Win Rate</div><div class="stat-desc">10 wins out of 16 tracked sessions</div></div>
-      <div class="stat-card"><div class="stat-value">+880</div><div class="stat-label">NQ Points</div><div class="stat-desc">Cumulated — Apr 10 to May 14, 2026</div></div>
-      <div class="stat-card"><div class="stat-value">10 / 2</div><div class="stat-label">W &nbsp;/&nbsp; L</div><div class="stat-desc">Plus 4 breakeven sessions</div></div>
-      <div class="stat-card"><div class="stat-value">5:1</div><div class="stat-label">W/L Ratio</div><div class="stat-desc">Avg gain ~108 pts vs avg loss ~48 pts</div></div>
-    </div>
-    <div style="text-align:center;"><a href="#" class="btn-ghost" onclick="showPage('results');return false;">View Full Track Record →</a></div>
-  </div></div>
-
-  <div class="offer-section"><div class="offer-inner">
-    <p class="section-tag">// The Offer</p>
-    <h2 class="section-title">One subscription.<br>Zero bullshit.</h2>
-    <p class="section-sub" style="margin:0 auto;">Everything you need to start every session with a structural edge.</p>
-    <div class="offer-card">
-      <div class="offer-badge">Monthly Access</div>
-      <div class="offer-price"><sup>$</sup>250<sub> CAD</sub></div>
-      <div class="offer-period">/ month · Cancel anytime</div>
-      <ul class="offer-features">
-        <li><div class="offer-check">✓</div> Daily bias analysis (Monday – Friday)</li>
-        <li><div class="offer-check">✓</div> Probable direction + key levels + global context</li>
-        <li><div class="offer-check">✓</div> Prepared alternative scenarios</li>
-        <li><div class="offer-check">✓</div> Private Discord channel access</li>
-        <li><div class="offer-check">✓</div> Full archive of past biases</li>
-        <li><div class="offer-check">✓</div> Real-time updates if context shifts</li>
-      </ul>
-      <a href="#" class="btn-primary" style="width:100%;text-align:center;display:block;" onclick="showPage('subscribe');return false;">Get Started →</a>
-    </div>
-  </div></div>
-</div>
-
-<!-- ══ RESULTS ══ -->
-<div id="page-results" class="page">
-  <section>
-    <p class="section-tag">// Full Transparency</p>
-    <h2 class="section-title">Data.<br>Not opinions.</h2>
-    <p class="section-sub">Every session logged. Every result published. No cherry-picking.</p>
-
-    <!-- LIVE STATS GRID -->
-    <div class="stats-grid" style="margin-top:48px;">
-      <div class="stat-card"><div class="stat-value">63%</div><div class="stat-label">Win Rate</div><div class="stat-desc">10 wins out of 16 tracked sessions</div></div>
-      <div class="stat-card"><div class="stat-value">+880</div><div class="stat-label">NQ Points</div><div class="stat-desc">Cumulated — Apr 10 to May 14, 2026</div></div>
-      <div class="stat-card"><div class="stat-value">10 / 2</div><div class="stat-label">W &nbsp;/&nbsp; L</div><div class="stat-desc">Plus 4 breakeven sessions</div></div>
-      <div class="stat-card"><div class="stat-value">5:1</div><div class="stat-label">W/L Ratio</div><div class="stat-desc">Avg gain ~108 pts vs avg loss ~48 pts</div></div>
-    </div>
-
-    <!-- CUMULATIVE CHART -->
-    <div class="results-chart" style="padding:32px 28px;">
-      <div class="chart-header">
-        <div class="chart-title">Cumulative NQ Points</div>
-        <div class="chart-meta">Apr 10 — May 14, 2026</div>
-      </div>
-      <div style="position:relative;width:100%;height:200px;margin-top:8px;">
-        <canvas id="cumLineChart" role="img" aria-label="Cumulative NQ points chart from April 10 to May 14 2026, ending at +880 points">+880 pts cumulated over 16 sessions.</canvas>
-      </div>
-      <div style="display:flex;gap:24px;margin-top:16px;flex-wrap:wrap;">
-        <div style="display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);"><div style="width:10px;height:10px;border-radius:2px;background:#A78BFA;"></div>Cumulative pts</div>
-        <div style="display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);"><div style="width:10px;height:10px;border-radius:50%;background:#4ADE80;"></div>Win</div>
-        <div style="display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);"><div style="width:10px;height:10px;border-radius:50%;background:#F87171;"></div>Loss</div>
-        <div style="display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);"><div style="width:10px;height:10px;border-radius:50%;background:#60A5FA;"></div>BE</div>
-      </div>
-    </div>
-
-    <!-- SESSION LOG TABLE -->
-    <div style="margin-top:40px;">
-      <p class="section-tag">// Session Log — Apr 10 to May 14, 2026</p>
-      <table class="perf-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Bias</th>
-            <th>Conviction</th>
-            <th>Result</th>
-            <th>Est. pts</th>
-            <th>Notes</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">Apr 10</td>
-            <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:#F87171;">● Bearish</span></td>
-            <td style="font-size:12px;color:var(--muted);">NFP Fade</td>
-            <td><span class="badge-win">WIN</span></td>
-            <td style="font-family:'DM Mono',monospace;font-size:13px;color:#4ADE80;">+95</td>
-            <td style="font-size:12px;color:var(--muted);">PMH 25,386 swept. Fade toward 25,202 hit</td>
-          </tr>
-          <tr>
-            <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">Apr 13</td>
-            <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:#F87171;">● Bearish</span></td>
-            <td style="font-size:12px;color:var(--muted);">84.1%</td>
-            <td><span style="display:inline-block;background:rgba(96,165,250,0.12);border:1px solid rgba(96,165,250,0.25);color:#60A5FA;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;padding:3px 10px;border-radius:2px;">BE</span></td>
-            <td style="font-family:'DM Mono',monospace;font-size:13px;color:#60A5FA;">+25</td>
-            <td style="font-size:12px;color:var(--muted);">Monday delay. Model confirmed min BE protection</td>
-          </tr>
-          <tr>
-            <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">Apr 14</td>
-            <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:#F87171;">● Bearish</span></td>
-            <td style="font-size:12px;color:var(--muted);">86.2%</td>
-            <td><span class="badge-win">WIN</span></td>
-            <td style="font-family:'DM Mono',monospace;font-size:13px;color:#4ADE80;">+120</td>
-            <td style="font-size:12px;color:var(--muted);">Sweep 25,701–745 → T2 at 25,541 hit</td>
-          </tr>
-          <tr>
-            <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">Apr 15</td>
-            <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:#4ADE80;">● Bullish</span></td>
-            <td style="font-size:12px;color:var(--muted);">84.6%</td>
-            <td><span class="badge-win">WIN</span></td>
-            <td style="font-family:'DM Mono',monospace;font-size:13px;color:#4ADE80;">+110</td>
-            <td style="font-size:12px;color:var(--muted);">Sweep 25,925–935 → T1/T2 at 26,048–058 hit</td>
-          </tr>
-          <tr>
-            <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">Apr 17</td>
-            <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:#F87171;">● Bearish</span></td>
-            <td style="font-size:12px;color:var(--muted);">82%</td>
-            <td><span class="badge-win">WIN</span></td>
-            <td style="font-family:'DM Mono',monospace;font-size:13px;color:#4ADE80;">+180</td>
-            <td style="font-size:12px;color:var(--muted);">Sweep 26,822–865 → T2 PML 26,440 hit</td>
-          </tr>
-          <tr>
-            <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">Apr 20</td>
-            <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:#4ADE80;">● Bullish</span></td>
-            <td style="font-size:12px;color:var(--muted);">1R conf.</td>
-            <td><span class="badge-win">WIN</span></td>
-            <td style="font-family:'DM Mono',monospace;font-size:13px;color:#4ADE80;">+55</td>
-            <td style="font-size:12px;color:var(--muted);">Sweep 26,760–785 → T2 at 26,855 reached</td>
-          </tr>
-          <tr>
-            <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">Apr 21</td>
-            <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:#4ADE80;">● Bullish</span></td>
-            <td style="font-size:12px;color:var(--muted);">80%</td>
-            <td><span class="badge-win">WIN</span></td>
-            <td style="font-family:'DM Mono',monospace;font-size:13px;color:#4ADE80;">+80</td>
-            <td style="font-size:12px;color:var(--muted);">Zone 26,759–797 swept → London High 26,877</td>
-          </tr>
-          <tr>
-            <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">Apr 23</td>
-            <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:#F87171;">● Bearish</span></td>
-            <td style="font-size:12px;color:var(--muted);">55%</td>
-            <td><span style="display:inline-block;background:rgba(96,165,250,0.12);border:1px solid rgba(96,165,250,0.25);color:#60A5FA;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;padding:3px 10px;border-radius:2px;">BE</span></td>
-            <td style="font-family:'DM Mono',monospace;font-size:13px;color:#60A5FA;">+25</td>
-            <td style="font-size:12px;color:var(--muted);">Low conviction flag. Partial exit only</td>
-          </tr>
-          <tr>
-            <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">Apr 24</td>
-            <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:#F87171;">● Bearish</span></td>
-            <td style="font-size:12px;color:var(--muted);">0.5R</td>
-            <td><span class="badge-loss">LOSS</span></td>
-            <td style="font-family:'DM Mono',monospace;font-size:13px;color:#F87171;">-54</td>
-            <td style="font-size:12px;color:var(--muted);">0.5R confidence. Hit & Run. Stop hit pre-TP</td>
-          </tr>
-          <tr>
-            <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">May 4</td>
-            <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:#F87171;">● Bearish</span></td>
-            <td style="font-size:12px;color:var(--muted);">—</td>
-            <td><span class="badge-win">WIN</span></td>
-            <td style="font-family:'DM Mono',monospace;font-size:13px;color:#4ADE80;">+120</td>
-            <td style="font-size:12px;color:var(--muted);">Post-migration. Zone 27,876–27,979 → T2/T3 hit</td>
-          </tr>
-          <tr>
-            <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">May 5</td>
-            <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:#F87171;">● Bearish</span></td>
-            <td style="font-size:12px;color:var(--muted);">64%</td>
-            <td><span style="display:inline-block;background:rgba(96,165,250,0.12);border:1px solid rgba(96,165,250,0.25);color:#60A5FA;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;padding:3px 10px;border-radius:2px;">BE</span></td>
-            <td style="font-family:'DM Mono',monospace;font-size:13px;color:#60A5FA;">+25</td>
-            <td style="font-size:12px;color:var(--muted);">Market consolidated inside zone. BE protection</td>
-          </tr>
-          <tr>
-            <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">May 7</td>
-            <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:#F87171;">● Bearish</span></td>
-            <td style="font-size:12px;color:var(--muted);">68%</td>
-            <td><span class="badge-win">WIN</span></td>
-            <td style="font-family:'DM Mono',monospace;font-size:13px;color:#4ADE80;">+115</td>
-            <td style="font-size:12px;color:var(--muted);">Zone 28,760–867 → T2 at 28,616 hit</td>
-          </tr>
-          <tr>
-            <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">May 12</td>
-            <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:#F87171;">● Bearish</span></td>
-            <td style="font-size:12px;color:var(--muted);">67%</td>
-            <td><span class="badge-loss">LOSS</span></td>
-            <td style="font-family:'DM Mono',monospace;font-size:13px;color:#F87171;">-43</td>
-            <td style="font-size:12px;color:var(--muted);">"No Man's Land" flag active. NQ closed UP on the day</td>
-          </tr>
-          <tr>
-            <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">May 13</td>
-            <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:#F87171;">● Bearish</span></td>
-            <td style="font-size:12px;color:var(--muted);">68%</td>
-            <td><span style="display:inline-block;background:rgba(96,165,250,0.12);border:1px solid rgba(96,165,250,0.25);color:#60A5FA;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;padding:3px 10px;border-radius:2px;">BE</span></td>
-            <td style="font-family:'DM Mono',monospace;font-size:13px;color:#60A5FA;">+25</td>
-            <td style="font-size:12px;color:var(--muted);">NQ ATH session. BE saved the day</td>
-          </tr>
-          <tr>
-            <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">May 14</td>
-            <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:#4ADE80;">● Bullish</span></td>
-            <td style="font-size:12px;color:var(--muted);">—</td>
-            <td><span class="badge-win">WIN</span></td>
-            <td style="font-family:'DM Mono',monospace;font-size:13px;color:#4ADE80;">+80</td>
-            <td style="font-size:12px;color:var(--muted);">Zone 29,391–459 → T1/T2 at 29,500–541 hit</td>
-          </tr>
-        </tbody>
-      </table>
-      <p style="font-size:11px;color:var(--muted);margin-top:12px;line-height:1.6;">* Apr 22 (no bias), Apr 25–May 1 (model migration week) and exam skip days excluded from win rate. Points are estimated based on TP levels vs. entry trigger midpoint.</p>
-    </div>
-
-    <!-- METHOD -->
-    <div style="margin-top:60px;padding:40px;border:1px solid var(--border);border-radius:4px;background:rgba(124,58,237,0.04);">
-      <p class="section-tag">// Our Method</p>
-      <h3 class="section-title" style="font-size:32px;">How we build the bias.</h3>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:32px;">
-        <div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;color:var(--purple-light);margin-bottom:10px;">01 / Data</div><p style="font-size:14px;color:var(--muted);line-height:1.7;">Overnight futures analysis, daily macro data, inter-market correlations, institutional volume and order flow.</p></div>
-        <div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;color:var(--purple-light);margin-bottom:10px;">02 / Structure</div><p style="font-size:14px;color:var(--muted);line-height:1.7;">Key level identification (HTF → LTF), liquidity zones, price imbalances and active order blocks.</p></div>
-        <div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;color:var(--purple-light);margin-bottom:10px;">03 / Decision</div><p style="font-size:14px;color:var(--muted);line-height:1.7;">Assignment of a probabilistic bias (Bullish / Bearish / Neutral) with conviction level and alternative scenarios.</p></div>
-      </div>
-    </div>
-    <div style="text-align:center;margin-top:60px;">
-      <p style="font-size:15px;color:var(--muted);margin-bottom:24px;">Ready to trade with a structural edge?</p>
-      <a href="#" class="btn-primary" onclick="showPage('subscribe');return false;">Access Daily Biases →</a>
-    </div>
-  </section>
-</div>
-
-<!-- ══ ABOUT ══ -->
-<div id="page-about" class="page">
-  <div class="about-section"><div class="about-inner">
-    <p class="section-tag">// Who We Are</p>
-    <h2 class="section-title">Born from an observation.<br>Built on data.</h2>
-    <div class="about-grid">
-      <div class="about-text">
-        <p>Quantum Bias was born from a simple observation: <strong>most traders fail not from a lack of strategy, but from a lack of direction.</strong></p>
-        <p>Every day, thousands of traders enter the market without a clear bias — reacting to price movements rather than anticipating them. This lack of structure leads to hesitation, overtrading, and avoidable losses.</p>
-        <p><strong>Our vision is to eliminate that uncertainty.</strong> By combining quantitative analysis, market structure, and concrete data, we deliver a clear, actionable bias every morning.</p>
-        <p>The goal isn't to predict the market with certainty — nobody can. It's to provide a <strong>logical framework for making better decisions</strong>, consistently and with discipline.</p>
-        <p>Quantum Bias isn't a typical signal service. It's a tool for <strong>thinking like a structured trader.</strong></p>
-        <p style="margin-bottom:0;">Our mission is simple: <strong>turn uncertainty into an edge.</strong></p>
-      </div>
-      <div class="about-pillars">
-        <div class="pillar"><div class="pillar-icon">📊</div><h4>Data First</h4><p>Every bias is grounded in quantifiable data — never gut feelings. We measure, compare, then decide.</p></div>
-        <div class="pillar"><div class="pillar-icon">🧱</div><h4>Structure Above All</h4><p>HTF levels, liquidity zones, order blocks — a structured read of the market before every session.</p></div>
-        <div class="pillar"><div class="pillar-icon">🔁</div><h4>Systemic Consistency</h4><p>Same method. Every day. No exceptions. Performance comes from the disciplined repetition of a solid process.</p></div>
-        <div class="pillar"><div class="pillar-icon">🎯</div><h4>Full Transparency</h4><p>Our results are published raw — wins and losses. We hide nothing. That's how trust is built over time.</p></div>
-      </div>
-    </div>
-    <div style="margin-top:80px;padding:60px;text-align:center;border:1px solid var(--border);border-radius:4px;background:linear-gradient(145deg,rgba(124,58,237,0.08),rgba(7,7,11,0.5));position:relative;overflow:hidden;">
-      <div style="position:absolute;top:-50px;left:50%;transform:translateX(-50%);width:200px;height:200px;background:radial-gradient(circle,rgba(124,58,237,0.2) 0%,transparent 70%);pointer-events:none;"></div>
-      <p style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--purple-light);margin-bottom:20px;">Our Mission</p>
-      <blockquote style="font-family:'Syne',sans-serif;font-size:clamp(22px,3vw,36px);font-weight:700;color:#fff;line-height:1.3;letter-spacing:-.5px;max-width:700px;margin:0 auto 24px;">"Turn uncertainty into an edge — every morning, for every trader."</blockquote>
-      <p style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">— Quantum Bias</p>
-    </div>
-    <div style="text-align:center;margin-top:60px;"><a href="#" class="btn-primary" onclick="showPage('subscribe');return false;">Join Quantum Bias →</a></div>
-  </div></div>
-</div>
-
-<!-- ══ SUBSCRIBE ══ -->
-<div id="page-subscribe" class="page">
-  <div class="offer-section"><div class="offer-inner" style="max-width:900px;">
-    <p class="section-tag">// Member Access</p>
-    <h2 class="section-title">Get the market bias<br>every morning.</h2>
-    <p class="section-sub" style="margin:0 auto;">One subscription. Everything you need to trade with structure and confidence.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:48px;">
-      <div class="offer-card" style="border:2px solid var(--purple);text-align:left;">
-        <div style="position:absolute;top:-1px;right:24px;background:var(--purple);color:#fff;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;padding:4px 14px;border-radius:0 0 4px 4px;">POPULAR</div>
-        <div class="offer-badge" style="margin-bottom:24px;">Monthly Access</div>
-        <div class="offer-price" style="font-size:60px;"><sup>$</sup>250<sub> CAD</sub></div>
-        <div class="offer-period">/ month · Cancel anytime</div>
-        <ul class="offer-features" style="margin-top:32px;">
-          <li><div class="offer-check">✓</div> Daily bias (Monday – Friday)</li>
-          <li><div class="offer-check">✓</div> Direction + key levels + context</li>
-          <li><div class="offer-check">✓</div> Prepared alternative scenarios</li>
-          <li><div class="offer-check">✓</div> Private Discord channel</li>
-          <li><div class="offer-check">✓</div> Full bias archive</li>
-          <li><div class="offer-check">✓</div> Real-time updates</li>
-        </ul>
-        <a href="#" class="btn-primary" style="width:100%;text-align:center;display:block;margin-top:8px;" onclick="alert('Redirecting to secure payment...');return false;">Get Started Now →</a>
-        <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:12px;">Secure payment · Cancel in 1 click</p>
-      </div>
-      <div style="padding:48px 36px;background:var(--dark);border:1px solid var(--border);">
-        <p style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:28px;">Frequently Asked Questions</p>
-        <div style="display:flex;flex-direction:column;gap:24px;">
-          <div><p style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--purple-light);margin-bottom:6px;">What time is the bias published?</p><p style="font-size:13px;color:var(--muted);line-height:1.6;">Every morning before 8:30 AM EST, ahead of the US market open.</p></div>
-          <div><p style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--purple-light);margin-bottom:6px;">Which market is analyzed?</p><p style="font-size:13px;color:var(--muted);line-height:1.6;">NQ (Nasdaq Futures) is the primary focus, with ES, GC and macro context included.</p></div>
-          <div><p style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--purple-light);margin-bottom:6px;">Is this for beginners?</p><p style="font-size:13px;color:var(--muted);line-height:1.6;">Recommended for traders with a basic understanding of market structure.</p></div>
-          <div><p style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--purple-light);margin-bottom:6px;">Can I cancel?</p><p style="font-size:13px;color:var(--muted);line-height:1.6;">Yes, at any time. No minimum commitment. No cancellation fees.</p></div>
-        </div>
-        <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border);"><p style="font-size:12px;color:var(--muted);line-height:1.6;">⚠️ <em>Past performance does not guarantee future results. Trading involves significant risk of capital loss.</em></p></div>
-      </div>
-    </div>
-    <div style="display:flex;justify-content:center;gap:40px;margin-top:48px;flex-wrap:wrap;">
-      <div style="text-align:center;"><div style="font-size:22px;margin-bottom:6px;">🔒</div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);">Secure Payment</div></div>
-      <div style="text-align:center;"><div style="font-size:22px;margin-bottom:6px;">📅</div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);">Cancel Anytime</div></div>
-      <div style="text-align:center;"><div style="font-size:22px;margin-bottom:6px;">💬</div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);">Support Available</div></div>
-      <div style="text-align:center;"><div style="font-size:22px;margin-bottom:6px;">📊</div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);">Transparent Results</div></div>
-    </div>
-  </div></div>
-</div>
-
-<!-- ══ CONTACT ══ -->
-<div id="page-contact" class="page">
-  <div class="contact-inner">
-    <p class="section-tag">// Get In Touch</p>
-    <h2 class="section-title">We're here.</h2>
-    <p class="section-sub" style="margin:0 auto;">Questions, partnerships, or just want to talk trading — reach out anytime.</p>
-    <div class="contact-channels">
-      <a class="channel" href="mailto:contact@quantumbias.com"><div class="channel-icon">📧</div><div class="channel-label">Email</div><div class="channel-value">contact@quantumbias.com</div></a>
-      <a class="channel" href="#"><div class="channel-icon">💬</div><div class="channel-label">Discord</div><div class="channel-value">discord.gg/quantumbias</div></a>
-      <a class="channel" href="#"><div class="channel-icon">✈️</div><div class="channel-label">Telegram</div><div class="channel-value">@QuantumBias</div></a>
-    </div>
-    <div style="background:var(--dark);border:1px solid var(--border);border-radius:4px;padding:40px;">
-      <p class="section-tag">// Send a Message</p>
-      <div class="contact-form">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-          <div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" placeholder="Alex"></div>
-          <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" placeholder="alex@email.com"></div>
-        </div>
-        <div class="form-group"><label class="form-label">Subject</label><input type="text" class="form-input" placeholder="Question about the subscription"></div>
-        <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" placeholder="Your message..."></textarea></div>
-        <button class="btn-primary" style="width:100%;text-align:center;" onclick="alert('Message sent!');return false;">Send Message</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ DAILY BIAS (MEMBERS) ══ -->
-<div id="page-bias" class="page">
-  <div class="bias-login-gate" id="biasLoginGate">
-    <div class="bias-lock-card">
-      <div class="bias-lock-icon">🔐</div>
-      <div class="bias-lock-title">Member Access</div>
-      <p class="bias-lock-sub">This page is exclusively for Quantum Bias subscribers.<br>Enter your access code to continue.</p>
-      <label class="bias-input-label">Access Code</label>
-      <div class="bias-input-wrap"><input class="bias-input" id="biasCodeInput" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')biasLogin()"></div>
-      <div class="bias-login-err" id="biasLoginErr">Incorrect code. Please try again.</div>
-      <button class="btn-primary" style="width:100%;text-align:center;" onclick="biasLogin()">Access Bias →</button>
-      <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border);"><p style="font-size:12px;color:var(--muted);">Not subscribed yet? <a href="#" onclick="showPage('subscribe');return false;" style="color:var(--purple-light);text-decoration:none;">View the offer →</a></p></div>
-    </div>
+  <div class="updated">
+    Last Updated:
+    <span id="updated">-</span>
   </div>
 
-  <div class="bias-dashboard" id="biasDashboard">
-    <div class="bias-header">
-      <div class="bias-header-left">
-        <div class="bias-date-tag" id="biasDateTag">// Wednesday, April 29, 2025 · NY Session</div>
-        <h2 style="font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,48px);font-weight:800;color:#fff;letter-spacing:-1.5px;line-height:1.1;">Daily Bias — <span style="color:var(--purple-light);">NQ Futures</span></h2>
-        <div class="bias-direction-badge bullish"><div class="bias-direction-dot"></div>BULLISH</div>
-        <div class="bias-conviction"><span class="conviction-label">Conviction</span><div class="conviction-bar"><div class="conviction-fill" style="width:75%"></div></div><span class="conviction-pct">75%</span></div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-end;">
-        <button class="bias-logout-btn" onclick="biasLogout()">Log Out</button>
-        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;color:var(--muted);text-align:right;">Published at 8:15 AM EST<br>Last updated: 9:02 AM EST</div>
-      </div>
-    </div>
+  <div class="sessions">
+    <h2>Trading Sessions</h2>
 
-    <div class="bias-context-band">
-      <div class="ctx-item"><div class="ctx-item-label">NQ Overnight</div><div class="ctx-item-val up">▲ +0.84%</div></div>
-      <div class="ctx-item"><div class="ctx-item-label">ES Overnight</div><div class="ctx-item-val up">▲ +0.61%</div></div>
-      <div class="ctx-item"><div class="ctx-item-label">VIX</div><div class="ctx-item-val dn">18.4 ↓</div></div>
-      <div class="ctx-item"><div class="ctx-item-label">Macro Data</div><div class="ctx-item-val" style="color:var(--muted);font-size:12px;">GDP Prelim 8:30 AM EST</div></div>
-    </div>
-
-    <div class="bias-grid" style="margin-top:2px;">
-      <div class="bias-card card-sweep">
-        <div class="bias-card-num">01 / Sweep Zone</div>
-        <div class="bias-card-icon">🌊</div>
-        <h3>Liquidity Sweep Zone</h3>
-        <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;">Area where the market is likely to sweep liquidity before moving in the bias direction.</p>
-        <div class="bias-zone-row"><span class="bias-zone-label">High Sweep Zone</span><span class="bias-zone-val neutral-val">19,420 – 19,445</span></div>
-        <div class="bias-zone-row"><span class="bias-zone-label">Low Sweep Zone</span><span class="bias-zone-val neutral-val">19,280 – 19,300</span></div>
-        <div class="bias-zone-row"><span class="bias-zone-label">Targeted Liquidity</span><span class="bias-zone-val">Equal Lows Apr 29</span></div>
-        <div class="bias-zone-row"><span class="bias-zone-label">Type</span><span class="bias-zone-val neutral-val">BSL (Buy-Side Liq.)</span></div>
-        <div class="bias-card-note">⚡ The market should sweep the equal highs at 19,420 before revealing its true direction. Be patient — don't chase the initial impulse.</div>
-      </div>
-
-      <div class="bias-card card-trigger">
-        <div class="bias-card-num">02 / Trigger & Target</div>
-        <div class="bias-card-icon">🎯</div>
-        <h3>Trigger & Target</h3>
-        <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;">Signal confirming bias activation and session price target.</p>
-        <div class="bias-zone-row"><span class="bias-zone-label">Long Trigger</span><span class="bias-zone-val bullish-val">19,310 – 19,325</span></div>
-        <div class="bias-zone-row"><span class="bias-zone-label">Confirmation</span><span class="bias-zone-val">5min close above 19,330</span></div>
-        <div class="bias-zone-row"><span class="bias-zone-label">Target 1</span><span class="bias-zone-val bullish-val">19,480</span></div>
-        <div class="bias-zone-row"><span class="bias-zone-label">Target 2 (extension)</span><span class="bias-zone-val bullish-val">19,560</span></div>
-        <div class="bias-zone-row"><span class="bias-zone-label">Estimated R:R</span><span class="bias-zone-val bullish-val">1 : 3.2</span></div>
-        <div class="bias-card-note">🎯 Wait for a clean reaction at the trigger before entering. A bullish BOS on the 5-minute chart confirms the setup.</div>
-      </div>
-
-      <div class="bias-card card-invalid">
-        <div class="bias-card-num">03 / Invalidation</div>
-        <div class="bias-card-icon">⛔</div>
-        <h3>Invalidation Level</h3>
-        <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;">If these levels are broken, the bias is cancelled. No trades in the intended direction.</p>
-        <div class="bias-zone-row"><span class="bias-zone-label">Bullish Bias Invalidation</span><span class="bias-zone-val bearish-val">Below 19,220</span></div>
-        <div class="bias-zone-row"><span class="bias-zone-label">Required Close</span><span class="bias-zone-val bearish-val">15min close under 19,220</span></div>
-        <div class="bias-zone-row"><span class="bias-zone-label">If invalidated → bias</span><span class="bias-zone-val" style="color:#F87171;">BEARISH toward 19,050</span></div>
-        <div class="bias-zone-row"><span class="bias-zone-label">Suggested Stop Loss</span><span class="bias-zone-val bearish-val">19,200 (structure)</span></div>
-        <div class="bias-card-note">⛔ A 15-minute candle close below 19,220 fully invalidates the bullish scenario. Flip to bearish bias targeting 19,050.</div>
-      </div>
-    </div>
-
-    <div class="bias-scenarios">
-      <div class="scenario-box scenario-bull">
-        <div class="scenario-label">Scenario A — Primary</div>
-        <div class="scenario-title">📈 Bullish Continuation</div>
-        <div class="scenario-desc">Market opens gap up, sweeps equal highs at 19,420, clean rejection, then consolidation 9:30–10:00 AM. Long entry on trigger at 19,315 after bullish BOS. Target T1: 19,480 · T2: 19,560.</div>
-        <div class="scenario-prob">Probability: 75%</div>
-      </div>
-      <div class="scenario-box scenario-bear">
-        <div class="scenario-label">Scenario B — Alternative</div>
-        <div class="scenario-title">📉 Rejection & Reversal</div>
-        <div class="scenario-desc">Market tests 19,420 but fails to break above. 15-min close below 19,220 → bias flips bearish. Short toward 19,050 (HTF support + weekly FVG). Do not force longs if structure is broken.</div>
-        <div class="scenario-prob">Probability: 25%</div>
-      </div>
-    </div>
-
-    <div style="margin-top:2px;background:var(--dark);border:1px solid var(--border);padding:32px;">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--purple-light);margin-bottom:12px;">// Analyst Note</div>
-      <p style="font-size:14px;color:var(--text);line-height:1.8;max-width:800px;">The macro context remains favorable for bulls this morning with the GDP Prelim printing at 8:30 AM. If the number beats expectations, expect an immediate push toward 19,440–19,460 before a potential rejection. <strong style="color:#fff;">The key today is patience</strong> — the market will likely make a false move in pre-market before revealing its true direction around 9:45–10:00 AM EST. Manage your risk, wait for the clean setup.</p>
-    </div>
-
-    <div class="bias-disclaimer">
-      <p>⚠️ <strong style="color:rgba(245,158,11,0.9);">Disclaimer:</strong> This bias is a structured analysis for educational and informational purposes only. It does not constitute financial advice. Trading involves significant risk of capital loss. Manage your risk at all times.</p>
-    </div>
+    <div id="sessionsList"></div>
   </div>
-</div>
 
-<footer>
-  <div class="footer-logo">Quantum<span>Bias</span></div>
-  <div class="footer-copy">© 2025 Quantum Bias · All rights reserved</div>
-  <div class="footer-disclaimer">Past performance does not guarantee future results. Trading involves significant risk of capital loss.</div>
-</footer>
+  <script>
 
-<script>
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-  const map = { home:0, results:1, about:2, contact:3, bias:4 };
-  const links = document.querySelectorAll('.nav-links a');
-  if (map[id] !== undefined && links[map[id]]) links[map[id]].classList.add('active');
-  window.scrollTo({top:0, behavior:'smooth'});
-  if (id === 'results') buildResultsPage();
-}
+    const API = "https://qb-production-f306.up.railway.app/stats";
 
-const BIAS_CODE = 'QB2025';
+    async function loadStats() {
 
-function biasLogin() {
-  const input = document.getElementById('biasCodeInput').value.trim().toUpperCase();
-  const err = document.getElementById('biasLoginErr');
-  if (input === BIAS_CODE) {
-    err.style.display = 'none';
-    document.getElementById('biasLoginGate').style.display = 'none';
-    document.getElementById('biasDashboard').style.display = 'block';
-    const now = new Date();
-    document.getElementById('biasDateTag').textContent =
-      '// ' + now.toLocaleDateString('en-US', {weekday:'long',year:'numeric',month:'long',day:'numeric'}) + ' · NY Session';
-  } else {
-    err.style.display = 'block';
-    document.getElementById('biasCodeInput').value = '';
-    document.getElementById('biasCodeInput').style.borderColor = '#F87171';
-    setTimeout(() => { document.getElementById('biasCodeInput').style.borderColor = ''; }, 1200);
-  }
-}
+      try {
 
-function biasLogout() {
-  document.getElementById('biasDashboard').style.display = 'none';
-  document.getElementById('biasLoginGate').style.display = 'flex';
-  document.getElementById('biasCodeInput').value = '';
-}
+        const res = await fetch(API);
+        const data = await res.json();
 
-function buildResultsPage() {
-  // Cumulative line chart
-  const canvas = document.getElementById('cumLineChart');
-  if (canvas && !canvas.dataset.built) {
-    canvas.dataset.built = '1';
-    const sessions = [
-      {label:'Apr 10', pts:95,  type:'win'},
-      {label:'Apr 13', pts:25,  type:'be'},
-      {label:'Apr 14', pts:120, type:'win'},
-      {label:'Apr 15', pts:110, type:'win'},
-      {label:'Apr 17', pts:180, type:'win'},
-      {label:'Apr 20', pts:55,  type:'win'},
-      {label:'Apr 21', pts:80,  type:'win'},
-      {label:'Apr 23', pts:25,  type:'be'},
-      {label:'Apr 24', pts:-54, type:'loss'},
-      {label:'May 4',  pts:120, type:'win'},
-      {label:'May 5',  pts:25,  type:'be'},
-      {label:'May 7',  pts:115, type:'win'},
-      {label:'May 12', pts:-43, type:'loss'},
-      {label:'May 13', pts:25,  type:'be'},
-      {label:'May 14', pts:80,  type:'win'},
-    ];
-    let cum = 0;
-    const cumData = sessions.map(s => { cum += s.pts; return cum; });
-    const pointColors = sessions.map(s =>
-      s.type === 'win' ? '#4ADE80' : s.type === 'loss' ? '#F87171' : '#60A5FA'
-    );
-    new Chart(canvas, {
-      type: 'line',
-      data: {
-        labels: sessions.map(s => s.label),
-        datasets: [{
-          data: cumData,
-          borderColor: '#A78BFA',
-          backgroundColor: 'rgba(167,139,250,0.08)',
-          fill: true,
-          tension: 0.35,
-          pointRadius: 6,
-          pointBackgroundColor: pointColors,
-          pointBorderColor: '#07070B',
-          pointBorderWidth: 2,
-          borderWidth: 2,
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: '#0F0F18',
-            borderColor: 'rgba(124,58,237,0.3)',
-            borderWidth: 1,
-            titleColor: '#A78BFA',
-            bodyColor: '#E2E8F0',
-            callbacks: {
-              label: ctx => (ctx.parsed.y >= 0 ? '+' : '') + ctx.parsed.y + ' pts cumulative'
-            }
-          }
-        },
-        scales: {
-          x: {
-            ticks: { font:{size:11}, color:'#64748B' },
-            grid: { color:'rgba(124,58,237,0.08)' }
-          },
-          y: {
-            ticks: {
-              font:{size:11}, color:'#64748B',
-              callback: v => (v >= 0 ? '+' : '') + v
-            },
-            grid: { color:'rgba(124,58,237,0.08)' }
-          }
-        }
+        // MAIN STATS
+        document.getElementById("wins").innerText = data.wins;
+        document.getElementById("losses").innerText = data.losses;
+        document.getElementById("breakevens").innerText = data.breakevens;
+        document.getElementById("sessions").innerText = data.totalSessions;
+        document.getElementById("points").innerText = data.totalPoints;
+        document.getElementById("winrate").innerText = data.winRate + "%";
+
+        document.getElementById("updated").innerText =
+          new Date(data.lastUpdated).toLocaleString();
+
+        // SESSIONS
+        const sessionsList = document.getElementById("sessionsList");
+
+        sessionsList.innerHTML = "";
+
+        data.sessions.reverse().forEach(session => {
+
+          let className = "be";
+
+          if (session.result === "WIN") className = "win";
+          if (session.result === "LOSS") className = "loss";
+
+          sessionsList.innerHTML += `
+            <div class="session ${className}">
+              <h3>${session.date} — ${session.result}</h3>
+
+              <p><strong>Bias:</strong> ${session.bias}</p>
+
+              <p><strong>Points:</strong> ${session.pts}</p>
+
+              <p>${session.note}</p>
+            </div>
+          `;
+        });
+
+      } catch (err) {
+
+        console.error(err);
+
       }
-    });
-  }
-}
+    }
 
-window.addEventListener('scroll', () => {
-  document.querySelector('nav').style.padding = window.scrollY > 50 ? '12px 60px' : '20px 60px';
-});
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    loadStats();
+
+    setInterval(loadStats, 5000);
+
+  </script>
+
 </body>
 </html>
