@@ -989,10 +989,20 @@ function applyStats(data) {
   buildCumChart(data.sessions || []);
 }
 
+function parseDate(dateStr) {
+  const months = {Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12};
+  const parts = (dateStr||'').trim().split(' ');
+  if (parts.length < 2) return 0;
+  return (months[parts[0]] || 0) * 100 + parseInt(parts[1] || 0);
+}
+
 function buildSessionTable(sessions) {
   const tbody = document.getElementById('perfTableBody');
   if (!tbody) return;
-  const active = sessions.filter(s => s.result !== 'SKIP');
+  const active = sessions
+    .filter(s => s.result !== 'SKIP')
+    .slice()
+    .sort((a, b) => parseDate(b.date) - parseDate(a.date));
   tbody.innerHTML = active.map(s => {
     const biasColor = s.bias==='Bullish' ? '#4ADE80' : s.bias==='Bearish' ? '#F87171' : '#A78BFA';
     const badge =
