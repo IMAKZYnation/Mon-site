@@ -927,58 +927,65 @@ function buildResultsPage() {
   }
 }
 
+function buildResultsPage() { fetchLiveStats(); }
 window.addEventListener('scroll', () => {
   document.querySelector('nav').style.padding = window.scrollY > 50 ? '12px 60px' : '20px 60px';
 });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
-// ─── LIVE STATS FROM RAILWAY API ───────────────────────
 const API_URL = 'https://qb-production-f306.up.railway.app/stats';
+
+const FALLBACK = {
+  wins:12, losses:2, breakevens:4, totalSessions:18,
+  totalPoints:1185, winRate:86, wlRatio:'6.1:1', lastUpdated:null,
+  sessions:[
+    {date:'May 22',bias:'Bearish',result:'WIN', pts:120,conviction:null,   note:'Rejection zone 29,595-658. T1+T2 reached.'},
+    {date:'May 21',bias:'Bullish',result:'WIN', pts:185,conviction:null,   note:'Zone 29,097-185 swept. T1+T2+T3 all hit.'},
+    {date:'May 14',bias:'Bullish',result:'WIN', pts: 80,conviction:null,   note:'Zone 29,391-459 - T1/T2 hit.'},
+    {date:'May 13',bias:'Bearish',result:'BE',  pts: 25,conviction:'68%',  note:'NQ ATH session. BE saved the day.'},
+    {date:'May 12',bias:'Bearish',result:'LOSS',pts:-43,conviction:'67%',  note:'No Mans Land flag. NQ closed UP.'},
+    {date:'May 7', bias:'Bearish',result:'WIN', pts:115,conviction:'68%',  note:'Zone 28,760-867 - T2 at 28,616.'},
+    {date:'May 5', bias:'Bearish',result:'BE',  pts: 25,conviction:'64%',  note:'Market consolidated. BE protection.'},
+    {date:'May 4', bias:'Bearish',result:'WIN', pts:120,conviction:null,   note:'Post-migration. T2/T3 hit.'},
+    {date:'Apr 24',bias:'Bearish',result:'LOSS',pts:-54,conviction:'0.5R', note:'0.5R confidence. Stop hit pre-TP.'},
+    {date:'Apr 23',bias:'Bearish',result:'BE',  pts: 25,conviction:'55%',  note:'Low conviction. Partial exit only.'},
+    {date:'Apr 21',bias:'Bullish',result:'WIN', pts: 80,conviction:'80%',  note:'Zone 26,759-797 - London High 26,877.'},
+    {date:'Apr 20',bias:'Bullish',result:'WIN', pts: 55,conviction:'1R',   note:'Sweep 26,760-785 - T2 at 26,855.'},
+    {date:'Apr 17',bias:'Bearish',result:'WIN', pts:180,conviction:'82%',  note:'Sweep 26,822-865 - PML 26,440 hit.'},
+    {date:'Apr 15',bias:'Bullish',result:'WIN', pts:110,conviction:'84.6%',note:'Sweep 25,925-935 - T1/T2 hit.'},
+    {date:'Apr 14',bias:'Bearish',result:'WIN', pts:120,conviction:'86.2%',note:'Sweep 25,701-745 - T2 at 25,541.'},
+    {date:'Apr 13',bias:'Bearish',result:'BE',  pts: 25,conviction:'84.1%',note:'Monday delay. Min BE confirmed.'},
+    {date:'Apr 10',bias:'Bearish',result:'WIN', pts: 95,conviction:'NFP',  note:'PMH 25,386 swept. NFP fade worked.'}
+  ]
+};
 
 async function fetchLiveStats() {
   try {
-    const res  = await fetch(API_URL);
+    const res = await fetch(API_URL);
     const data = await res.json();
     applyStats(data);
   } catch(e) {
-    console.warn('Live stats unavailable — displaying cached data.');
+    console.warn('Railway unavailable - using fallback.');
+    applyStats(FALLBACK);
   }
 }
 
 function applyStats(data) {
   if (!data) return;
-
-  // Update all stat values across every page
-  document.querySelectorAll('[data-stat="winrate"]').forEach(el =>
-    el.textContent = data.winRate + '%');
-  document.querySelectorAll('[data-stat="points"]').forEach(el =>
-    el.textContent = '+' + data.totalPoints);
-  document.querySelectorAll('[data-stat="wlratio"]').forEach(el =>
-    el.textContent = data.wlRatio);
-  document.querySelectorAll('[data-stat="wl"]').forEach(el =>
-    el.textContent = data.wins + ' / ' + data.losses);
-  document.querySelectorAll('[data-stat="sessions"]').forEach(el =>
-    el.textContent = data.totalSessions);
-
-  // Descriptions
-  document.querySelectorAll('[data-desc="winrate"]').forEach(el =>
-    el.textContent = data.wins + ' wins out of ' + data.totalSessions + ' tracked sessions');
-  document.querySelectorAll('[data-desc="wl"]').forEach(el =>
-    el.textContent = 'Plus ' + data.breakevens + ' breakeven sessions');
-
-  // Last updated
+  document.querySelectorAll('[data-stat="winrate"]').forEach(el => el.textContent = data.winRate + '%');
+  document.querySelectorAll('[data-stat="points"]').forEach(el => el.textContent = '+' + data.totalPoints);
+  document.querySelectorAll('[data-stat="wlratio"]').forEach(el => el.textContent = data.wlRatio);
+  document.querySelectorAll('[data-stat="wl"]').forEach(el => el.textContent = data.wins + ' / ' + data.losses);
+  document.querySelectorAll('[data-stat="sessions"]').forEach(el => el.textContent = data.totalSessions);
+  document.querySelectorAll('[data-desc="winrate"]').forEach(el => el.textContent = data.wins + ' wins out of ' + data.totalSessions + ' tracked sessions');
+  document.querySelectorAll('[data-desc="wl"]').forEach(el => el.textContent = 'Plus ' + data.breakevens + ' breakeven sessions');
   if (data.lastUpdated) {
     const d = new Date(data.lastUpdated);
-    const label = d.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
-    document.querySelectorAll('[data-stat="lastupdated"]').forEach(el =>
-      el.textContent = 'Updated ' + label);
+    const label = d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    document.querySelectorAll('[data-stat="lastupdated"]').forEach(el => el.textContent = 'Updated ' + label);
   }
-
-  // Session table
   buildSessionTable(data.sessions || []);
-
-  // Cumulative chart
   buildCumChart(data.sessions || []);
 }
 
@@ -988,21 +995,21 @@ function buildSessionTable(sessions) {
   const active = sessions.filter(s => s.result !== 'SKIP');
   tbody.innerHTML = active.map(s => {
     const biasColor = s.bias==='Bullish' ? '#4ADE80' : s.bias==='Bearish' ? '#F87171' : '#A78BFA';
-    const resultBadge =
-      s.result === 'WIN'     ? '<span class="badge-win">WIN</span>' :
-      s.result === 'LOSS'    ? '<span class="badge-loss">LOSS</span>' :
-      s.result === 'PENDING' ? '<span style="display:inline-block;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);color:#F59E0B;font-family:\'DM Mono\',monospace;font-size:10px;padding:3px 10px;border-radius:2px;">LIVE</span>' :
-                               '<span style="display:inline-block;background:rgba(96,165,250,0.12);border:1px solid rgba(96,165,250,0.25);color:#60A5FA;font-family:\'DM Mono\',monospace;font-size:10px;padding:3px 10px;border-radius:2px;">BE</span>';
+    const badge =
+      s.result==='WIN'     ? '<span class="badge-win">WIN</span>' :
+      s.result==='LOSS'    ? '<span class="badge-loss">LOSS</span>' :
+      s.result==='PENDING' ? '<span style="display:inline-block;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);color:#F59E0B;font-family:DM Mono,monospace;font-size:10px;padding:3px 10px;border-radius:2px;">LIVE</span>' :
+                             '<span style="display:inline-block;background:rgba(96,165,250,0.12);border:1px solid rgba(96,165,250,0.25);color:#60A5FA;font-family:DM Mono,monospace;font-size:10px;padding:3px 10px;border-radius:2px;">BE</span>';
     const pts = s.pts || 0;
     const ptsColor = pts > 0 ? '#4ADE80' : pts < 0 ? '#F87171' : '#60A5FA';
-    const ptsStr   = pts >= 0 ? '+' + pts : '' + pts;
+    const ptsStr = pts >= 0 ? '+'+pts : ''+pts;
     return `<tr>
       <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">${s.date}</td>
       <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:${biasColor};">● ${s.bias}</span></td>
-      <td style="font-size:12px;color:var(--muted);">${s.conviction || '—'}</td>
-      <td>${resultBadge}</td>
+      <td style="font-size:12px;color:var(--muted);">${s.conviction||'—'}</td>
+      <td>${badge}</td>
       <td style="font-family:'DM Mono',monospace;font-size:13px;color:${ptsColor};">${ptsStr} pts</td>
-      <td style="font-size:12px;color:var(--muted);">${s.note || ''}</td>
+      <td style="font-size:12px;color:var(--muted);">${s.note||''}</td>
     </tr>`;
   }).join('');
 }
@@ -1011,54 +1018,41 @@ function buildCumChart(sessions) {
   const canvas = document.getElementById('cumLineChart');
   if (!canvas || typeof Chart === 'undefined') return;
   if (canvas._chart) { canvas._chart.destroy(); canvas._chart = null; }
-
-  const active = sessions
-    .filter(s => s.result !== 'SKIP' && s.result !== 'PENDING')
-    .slice().reverse();
-
+  const active = sessions.filter(s => s.result !== 'SKIP' && s.result !== 'PENDING').slice().reverse();
   let cum = 0;
-  const cumData    = active.map(s => { cum += (s.pts || 0); return cum; });
-  const ptColors   = active.map(s =>
-    s.result === 'WIN' ? '#4ADE80' : s.result === 'LOSS' ? '#F87171' : '#60A5FA');
-
+  const cumData = active.map(s => { cum += (s.pts||0); return cum; });
+  const ptColors = active.map(s => s.result==='WIN' ? '#4ADE80' : s.result==='LOSS' ? '#F87171' : '#60A5FA');
   canvas._chart = new Chart(canvas, {
-    type: 'line',
-    data: {
+    type:'line',
+    data:{
       labels: active.map(s => s.date),
-      datasets: [{
-        data: cumData,
-        borderColor: '#A78BFA',
-        backgroundColor: 'rgba(167,139,250,0.08)',
-        fill: true, tension: 0.35,
-        pointRadius: 6,
-        pointBackgroundColor: ptColors,
-        pointBorderColor: '#07070B',
-        pointBorderWidth: 2,
-        borderWidth: 2,
+      datasets:[{
+        data:cumData, borderColor:'#A78BFA',
+        backgroundColor:'rgba(167,139,250,0.08)',
+        fill:true, tension:0.35, pointRadius:6,
+        pointBackgroundColor:ptColors,
+        pointBorderColor:'#07070B', pointBorderWidth:2, borderWidth:2
       }]
     },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#0F0F18',
-          borderColor: 'rgba(124,58,237,0.3)',
-          borderWidth: 1,
-          titleColor: '#A78BFA',
-          bodyColor: '#E2E8F0',
-          callbacks: { label: ctx => (ctx.parsed.y >= 0 ? '+' : '') + ctx.parsed.y + ' pts cumulative' }
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'#0F0F18',borderColor:'rgba(124,58,237,0.3)',borderWidth:1,
+          titleColor:'#A78BFA',bodyColor:'#E2E8F0',
+          callbacks:{label:ctx=>(ctx.parsed.y>=0?'+':'')+ctx.parsed.y+' pts cumulative'}
         }
       },
-      scales: {
-        x: { ticks:{font:{size:11},color:'#64748B'}, grid:{color:'rgba(124,58,237,0.08)'} },
-        y: { ticks:{font:{size:11},color:'#64748B',callback:v=>(v>=0?'+':'')+v}, grid:{color:'rgba(124,58,237,0.08)'} }
+      scales:{
+        x:{ticks:{font:{size:11},color:'#64748B'},grid:{color:'rgba(124,58,237,0.08)'}},
+        y:{ticks:{font:{size:11},color:'#64748B',callback:v=>(v>=0?'+':'')+v},grid:{color:'rgba(124,58,237,0.08)'}}
       }
     }
   });
 }
 
-// Fetch on page load + every 60 seconds
+// Load on page open + refresh every 60s
 fetchLiveStats();
 setInterval(fetchLiveStats, 60000);
 </script>
