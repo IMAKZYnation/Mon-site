@@ -299,6 +299,7 @@ footer { border-top:1px solid var(--border);padding:40px 60px;display:flex;align
   <div class="nav-links">
     <a href="#" class="active" onclick="showPage('home');return false;">Home</a>
     <a href="#" onclick="showPage('results');return false;">Results</a>
+    <a href="#" onclick="showPage('indicator');return false;">Indicator</a>
     <a href="#" onclick="showPage('about');return false;">About</a>
     <a href="#" onclick="showPage('contact');return false;">Contact</a>
     <a href="#" class="nav-bias-link" onclick="showPage('bias');return false;">🔒 Daily Bias</a>
@@ -329,7 +330,7 @@ footer { border-top:1px solid var(--border);padding:40px 60px;display:flex;align
     <div class="hero-grid"></div>
     <div class="hero-orb hero-orb-1"></div>
     <div class="hero-orb hero-orb-2"></div>
-    <p class="hero-eyebrow">Quantitative Analysis · Daily Bias · 63% Win Rate</p>
+    <p class="hero-eyebrow">Quantitative Analysis · Daily Bias · <span data-stat="winrate">86%</span> Win Rate</p>
     <h1>Dominate the market<br><span class="highlight">before the open.</span></h1>
     <p class="hero-sub">Every morning, receive a clear bias built on real data and quantitative market analysis.</p>
     <div class="hero-actions">
@@ -337,9 +338,9 @@ footer { border-top:1px solid var(--border);padding:40px 60px;display:flex;align
       <a href="#" class="btn-ghost" onclick="showPage('results');return false;">View Results</a>
     </div>
     <div class="hero-stats">
-      <div class="hero-stat"><div class="hero-stat-num">63<span>%</span></div><div class="hero-stat-label">Win Rate</div></div>
-      <div class="hero-stat"><div class="hero-stat-num">+<span>880</span></div><div class="hero-stat-label">NQ Points</div></div>
-      <div class="hero-stat"><div class="hero-stat-num">5<span>:1</span></div><div class="hero-stat-label">W/L Ratio</div></div>
+      <div class="hero-stat"><div class="hero-stat-num" data-stat="winrate">86%</div><div class="hero-stat-label">Win Rate</div></div>
+      <div class="hero-stat"><div class="hero-stat-num" data-stat="points">+1185</div><div class="hero-stat-label">NQ Points</div></div>
+      <div class="hero-stat"><div class="hero-stat-num" data-stat="wlratio">6.1:1</div><div class="hero-stat-label">W/L Ratio</div></div>
     </div>
     <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
   </div>
@@ -386,33 +387,79 @@ footer { border-top:1px solid var(--border);padding:40px 60px;display:flex;align
     <p class="section-tag" style="text-align:center;">// Performance</p>
     <h2 class="section-title" style="text-align:center;">Data. Not opinions.</h2>
     <div class="stats-grid">
-      <div class="stat-card"><div class="stat-value" data-stat="winrate">63%</div><div class="stat-label">Win Rate</div><div class="stat-desc" data-desc="winrate">10 wins out of 16 tracked sessions</div></div>
-      <div class="stat-card"><div class="stat-value" data-stat="points">+880</div><div class="stat-label">NQ Points</div><div class="stat-desc">Cumulated — Apr 10 to May 14, 2026</div></div>
-      <div class="stat-card"><div class="stat-value" data-stat="wl">10 / 2</div><div class="stat-label">W &nbsp;/&nbsp; L</div><div class="stat-desc" data-desc="wl">Plus 4 breakeven sessions</div></div>
-      <div class="stat-card"><div class="stat-value" data-stat="wlratio">5:1</div><div class="stat-label">W/L Ratio</div><div class="stat-desc">Avg gain ~108 pts vs avg loss ~48 pts</div></div>
+      <div class="stat-card"><div class="stat-value" data-stat="winrate">86%</div><div class="stat-label">Win Rate</div><div class="stat-desc" data-desc="winrate">12 wins out of 18 tracked sessions</div></div>
+      <div class="stat-card"><div class="stat-value" data-stat="points">+1185</div><div class="stat-label">NQ Points</div><div class="stat-desc">Cumulated since launch</div></div>
+      <div class="stat-card"><div class="stat-value" data-stat="wl">12 / 2</div><div class="stat-label">W &nbsp;/&nbsp; L</div><div class="stat-desc" data-desc="wl">Plus 4 breakeven sessions</div></div>
+      <div class="stat-card"><div class="stat-value" data-stat="wlratio">6.1:1</div><div class="stat-label">W/L Ratio</div><div class="stat-desc">Avg gain ~108 pts vs avg loss ~48 pts</div></div>
     </div>
     <div style="text-align:center;"><a href="#" class="btn-ghost" onclick="showPage('results');return false;">View Full Track Record →</a></div>
   </div></div>
 
-  <div class="offer-section"><div class="offer-inner">
-    <p class="section-tag">// The Offer</p>
-    <h2 class="section-title">One subscription.<br>Zero bullshit.</h2>
-    <p class="section-sub" style="margin:0 auto;">Everything you need to start every session with a structural edge.</p>
-    <div class="offer-card">
-      <div class="offer-badge">Monthly Access</div>
-      <div class="offer-price"><sup>$</sup>250<sub> CAD</sub></div>
-      <div class="offer-period">/ month · Cancel anytime</div>
-      <ul class="offer-features">
-        <li><div class="offer-check">✓</div> Daily bias analysis (Monday – Friday)</li>
-        <li><div class="offer-check">✓</div> Probable direction + key levels + global context</li>
-        <li><div class="offer-check">✓</div> Prepared alternative scenarios</li>
-        <li><div class="offer-check">✓</div> Private Discord channel access</li>
-        <li><div class="offer-check">✓</div> Full archive of past biases</li>
-        <li><div class="offer-check">✓</div> Real-time updates if context shifts</li>
-      </ul>
-      <a href="#" class="btn-primary" style="width:100%;text-align:center;display:block;" onclick="showPage('subscribe');return false;">Get Started →</a>
+  <div style="padding:100px 60px;max-width:1200px;margin:0 auto;">
+    <p class="section-tag" style="text-align:center;">// The Offer</p>
+    <h2 class="section-title" style="text-align:center;">Three plans.<br>One edge.</h2>
+    <p class="section-sub" style="margin:0 auto 60px;text-align:center;">All plans billed monthly. Cancel anytime. No hidden fees.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;align-items:start;">
+
+      <!-- PLAN 1 -->
+      <div style="background:var(--dark);border:1px solid var(--border);border-radius:4px;padding:36px 28px;position:relative;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--cyan));border-radius:4px 4px 0 0;"></div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--purple-light);margin-bottom:12px;">01 / Analysis</div>
+        <h3 style="font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:#fff;margin-bottom:6px;">Morning Bias</h3>
+        <p style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:24px;">Daily pre-market bias every session.</p>
+        <div style="font-family:'Syne',sans-serif;font-size:42px;font-weight:800;color:#fff;letter-spacing:-2px;line-height:1;">$249<span style="font-size:16px;color:var(--muted);font-weight:400;">.99</span></div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin:6px 0 24px;">CAD / month</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;">
+          <li style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);"><span style="color:#4ADE80;font-size:11px;">✓</span> Daily bias (Mon–Fri)</li>
+          <li style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);"><span style="color:#4ADE80;font-size:11px;">✓</span> Sweep zone + trigger + invalidation</li>
+          <li style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);"><span style="color:#4ADE80;font-size:11px;">✓</span> Global market context</li>
+          <li style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);"><span style="color:#4ADE80;font-size:11px;">✓</span> Private Discord channel</li>
+          <li style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);"><span style="color:var(--muted);font-size:11px;">✗</span> Leadership Oscillator</li>
+        </ul>
+        <a href="#" class="btn-ghost" style="width:100%;text-align:center;display:block;" onclick="showPage('subscribe');return false;">Get Started →</a>
+      </div>
+
+      <!-- PLAN 2 — FEATURED -->
+      <div style="background:linear-gradient(145deg,#0F0F18,#0B0B0F);border:2px solid var(--purple);border-radius:4px;padding:36px 28px;position:relative;box-shadow:0 0 60px rgba(124,58,237,0.2);transform:translateY(-8px);">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--cyan));"></div>
+        <div style="position:absolute;top:-1px;right:16px;background:var(--purple);color:#fff;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;padding:4px 12px;border-radius:0 0 4px 4px;">BEST VALUE</div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--purple-light);margin-bottom:12px;">02 / Full Package</div>
+        <h3 style="font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:#fff;margin-bottom:6px;">Bias + Oscillator</h3>
+        <p style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:24px;">Daily bias AND the Leadership Oscillator.</p>
+        <div style="font-family:'Syne',sans-serif;font-size:42px;font-weight:800;color:#fff;letter-spacing:-2px;line-height:1;">$299<span style="font-size:16px;color:var(--muted);font-weight:400;">.99</span></div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin:6px 0 4px;">CAD / month</div>
+        <div style="font-family:'DM Mono',monospace;font-size:11px;color:#4ADE80;margin-bottom:24px;">Save $49.99/mo</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;">
+          <li style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);"><span style="color:#4ADE80;font-size:11px;">✓</span> Everything in Morning Bias</li>
+          <li style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);"><span style="color:#4ADE80;font-size:11px;">✓</span> Leadership Oscillator (TradingView)</li>
+          <li style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);"><span style="color:#4ADE80;font-size:11px;">✓</span> BB + RSI + Volume signals</li>
+          <li style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);"><span style="color:#4ADE80;font-size:11px;">✓</span> Priority support</li>
+          <li style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);"><span style="color:#4ADE80;font-size:11px;">✓</span> Early access to new features</li>
+        </ul>
+        <a href="#" class="btn-primary" style="width:100%;text-align:center;display:block;" onclick="showPage('subscribe');return false;">Get Full Access →</a>
+      </div>
+
+      <!-- PLAN 3 — INDICATOR -->
+      <div style="background:var(--dark);border:1px solid var(--border);border-radius:4px;padding:36px 28px;position:relative;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#22D3EE,var(--purple));border-radius:4px 4px 0 0;"></div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#22D3EE;margin-bottom:12px;">03 / Indicator</div>
+        <h3 style="font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:#fff;margin-bottom:6px;">Leadership Oscillator</h3>
+        <p style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:24px;">Standalone TradingView indicator.</p>
+        <div style="font-family:'Syne',sans-serif;font-size:42px;font-weight:800;color:#fff;letter-spacing:-2px;line-height:1;">$99<span style="font-size:16px;color:var(--muted);font-weight:400;">.99</span></div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin:6px 0 24px;">CAD / month</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;">
+          <li style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);"><span style="color:#22D3EE;font-size:11px;">✓</span> TradingView access</li>
+          <li style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);"><span style="color:#22D3EE;font-size:11px;">✓</span> BB + RSI + Volume confluence</li>
+          <li style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);"><span style="color:#22D3EE;font-size:11px;">✓</span> Signal EMA overlay</li>
+          <li style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);"><span style="color:#22D3EE;font-size:11px;">✓</span> Bollinger Bands integrated</li>
+          <li style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);"><span style="color:var(--muted);font-size:11px;">✗</span> Daily bias analysis</li>
+        </ul>
+        <a href="#" class="btn-ghost" style="width:100%;text-align:center;display:block;border-color:rgba(34,211,238,0.3);color:#22D3EE;" onclick="showPage('indicator');return false;">Get Indicator →</a>
+      </div>
+
     </div>
-  </div></div>
+  </div>
 </div>
 
 <!-- ══ RESULTS ══ -->
@@ -424,10 +471,10 @@ footer { border-top:1px solid var(--border);padding:40px 60px;display:flex;align
 
     <!-- LIVE STATS GRID -->
     <div class="stats-grid" style="margin-top:48px;">
-      <div class="stat-card"><div class="stat-value" data-stat="winrate">63%</div><div class="stat-label">Win Rate</div><div class="stat-desc" data-desc="winrate">10 wins out of 16 tracked sessions</div></div>
-      <div class="stat-card"><div class="stat-value" data-stat="points">+880</div><div class="stat-label">NQ Points</div><div class="stat-desc">Cumulated since launch</div></div>
-      <div class="stat-card"><div class="stat-value" data-stat="wl">10 / 2</div><div class="stat-label">W &nbsp;/&nbsp; L</div><div class="stat-desc" data-desc="wl">Plus 4 breakeven sessions</div></div>
-      <div class="stat-card"><div class="stat-value" data-stat="wlratio">5:1</div><div class="stat-label">W/L Ratio</div><div class="stat-desc">Avg gain ~108 pts vs avg loss ~48 pts</div></div>
+      <div class="stat-card"><div class="stat-value" data-stat="winrate">86%</div><div class="stat-label">Win Rate</div><div class="stat-desc" data-desc="winrate">12 wins out of 18 tracked sessions</div></div>
+      <div class="stat-card"><div class="stat-value" data-stat="points">+1185</div><div class="stat-label">NQ Points</div><div class="stat-desc">Cumulated since launch</div></div>
+      <div class="stat-card"><div class="stat-value" data-stat="wl">12 / 2</div><div class="stat-label">W &nbsp;/&nbsp; L</div><div class="stat-desc" data-desc="wl">Plus 4 breakeven sessions</div></div>
+      <div class="stat-card"><div class="stat-value" data-stat="wlratio">6.1:1</div><div class="stat-label">W/L Ratio</div><div class="stat-desc">Avg gain ~108 pts vs avg loss ~48 pts</div></div>
     </div>
 
     <!-- CUMULATIVE CHART -->
@@ -517,45 +564,145 @@ footer { border-top:1px solid var(--border);padding:40px 60px;display:flex;align
 
 <!-- ══ SUBSCRIBE ══ -->
 <div id="page-subscribe" class="page">
-  <div class="offer-section"><div class="offer-inner" style="max-width:900px;">
-    <p class="section-tag">// Member Access</p>
-    <h2 class="section-title">Get the market bias<br>every morning.</h2>
-    <p class="section-sub" style="margin:0 auto;">One subscription. Everything you need to trade with structure and confidence.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:48px;">
-      <div class="offer-card" style="border:2px solid var(--purple);text-align:left;">
-        <div style="position:absolute;top:-1px;right:24px;background:var(--purple);color:#fff;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;padding:4px 14px;border-radius:0 0 4px 4px;">POPULAR</div>
-        <div class="offer-badge" style="margin-bottom:24px;">Monthly Access</div>
-        <div class="offer-price" style="font-size:60px;"><sup>$</sup>250<sub> CAD</sub></div>
-        <div class="offer-period">/ month · Cancel anytime</div>
-        <ul class="offer-features" style="margin-top:32px;">
-          <li><div class="offer-check">✓</div> Daily bias (Monday – Friday)</li>
-          <li><div class="offer-check">✓</div> Direction + key levels + context</li>
-          <li><div class="offer-check">✓</div> Prepared alternative scenarios</li>
-          <li><div class="offer-check">✓</div> Private Discord channel</li>
-          <li><div class="offer-check">✓</div> Full bias archive</li>
-          <li><div class="offer-check">✓</div> Real-time updates</li>
+  <div style="max-width:1100px;margin:0 auto;padding:80px 60px;">
+    <p class="section-tag">// Choose Your Plan</p>
+    <h2 class="section-title">The edge you need.<br>Pick your access.</h2>
+    <p class="section-sub" style="margin-bottom:60px;">All plans billed monthly. Cancel anytime. No hidden fees. Prices in CAD.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;align-items:start;">
+
+      <!-- PLAN 1 -->
+      <div style="background:var(--dark);border:1px solid var(--border);border-radius:4px;padding:40px 28px;position:relative;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--cyan));border-radius:4px 4px 0 0;"></div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--purple-light);margin-bottom:16px;">01 / Analysis</div>
+        <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:8px;">Morning Bias</h3>
+        <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:28px;">Daily pre-market bias to structure every session.</p>
+        <div style="font-family:'Syne',sans-serif;font-size:44px;font-weight:800;color:#fff;letter-spacing:-2px;line-height:1;">$249<span style="font-size:18px;color:var(--muted);font-weight:400;">.99</span></div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin:8px 0 28px;">CAD / month</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:32px;">
+          <li style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);"><span style="color:#4ADE80;">✓</span> Daily bias (Mon–Fri before 8:30 AM)</li>
+          <li style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);"><span style="color:#4ADE80;">✓</span> Sweep zone + trigger + invalidation</li>
+          <li style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);"><span style="color:#4ADE80;">✓</span> Global market context</li>
+          <li style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);"><span style="color:#4ADE80;">✓</span> Private Discord channel</li>
+          <li style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);"><span style="color:#4ADE80;">✓</span> Full session archive</li>
+          <li style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);"><span style="color:var(--muted);">✗</span> Leadership Oscillator</li>
         </ul>
-        <a href="#" class="btn-primary" style="width:100%;text-align:center;display:block;margin-top:8px;" onclick="alert('Redirecting to secure payment...');return false;">Get Started Now →</a>
-        <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:12px;">Secure payment · Cancel in 1 click</p>
+        <a href="#" class="btn-ghost" style="width:100%;text-align:center;display:block;" onclick="alert('Stripe coming soon — contact us on Discord to subscribe!');return false;">Get Started →</a>
       </div>
-      <div style="padding:48px 36px;background:var(--dark);border:1px solid var(--border);">
-        <p style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:28px;">Frequently Asked Questions</p>
-        <div style="display:flex;flex-direction:column;gap:24px;">
-          <div><p style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--purple-light);margin-bottom:6px;">What time is the bias published?</p><p style="font-size:13px;color:var(--muted);line-height:1.6;">Every morning before 8:30 AM EST, ahead of the US market open.</p></div>
-          <div><p style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--purple-light);margin-bottom:6px;">Which market is analyzed?</p><p style="font-size:13px;color:var(--muted);line-height:1.6;">NQ (Nasdaq Futures) is the primary focus, with ES, GC and macro context included.</p></div>
-          <div><p style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--purple-light);margin-bottom:6px;">Is this for beginners?</p><p style="font-size:13px;color:var(--muted);line-height:1.6;">Recommended for traders with a basic understanding of market structure.</p></div>
-          <div><p style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--purple-light);margin-bottom:6px;">Can I cancel?</p><p style="font-size:13px;color:var(--muted);line-height:1.6;">Yes, at any time. No minimum commitment. No cancellation fees.</p></div>
-        </div>
-        <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border);"><p style="font-size:12px;color:var(--muted);line-height:1.6;">⚠️ <em>Past performance does not guarantee future results. Trading involves significant risk of capital loss.</em></p></div>
+
+      <!-- PLAN 2 — FEATURED -->
+      <div style="background:linear-gradient(145deg,#0F0F18,#0B0B0F);border:2px solid var(--purple);border-radius:4px;padding:40px 28px;position:relative;box-shadow:0 0 60px rgba(124,58,237,0.2);transform:translateY(-8px);">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--cyan));"></div>
+        <div style="position:absolute;top:-1px;right:20px;background:var(--purple);color:#fff;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;padding:4px 12px;border-radius:0 0 4px 4px;">BEST VALUE</div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--purple-light);margin-bottom:16px;">02 / Full Package</div>
+        <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:8px;">Bias + Oscillator</h3>
+        <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:28px;">Everything — daily bias AND the Leadership Oscillator on TradingView.</p>
+        <div style="font-family:'Syne',sans-serif;font-size:44px;font-weight:800;color:#fff;letter-spacing:-2px;line-height:1;">$299<span style="font-size:18px;color:var(--muted);font-weight:400;">.99</span></div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin:8px 0 4px;">CAD / month</div>
+        <div style="font-family:'DM Mono',monospace;font-size:11px;color:#4ADE80;margin-bottom:28px;">Save $49.99/mo vs. buying separately</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:32px;">
+          <li style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);"><span style="color:#4ADE80;">✓</span> Everything in Morning Bias</li>
+          <li style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);"><span style="color:#4ADE80;">✓</span> Leadership Oscillator (TradingView)</li>
+          <li style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);"><span style="color:#4ADE80;">✓</span> BB + RSI + Volume signals</li>
+          <li style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);"><span style="color:#4ADE80;">✓</span> Priority support</li>
+          <li style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);"><span style="color:#4ADE80;">✓</span> Early access to new features</li>
+        </ul>
+        <a href="#" class="btn-primary" style="width:100%;text-align:center;display:block;" onclick="alert('Stripe coming soon — contact us on Discord to subscribe!');return false;">Get Full Access →</a>
+      </div>
+
+      <!-- PLAN 3 — INDICATOR -->
+      <div style="background:var(--dark);border:1px solid var(--border);border-radius:4px;padding:40px 28px;position:relative;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#22D3EE,var(--purple));border-radius:4px 4px 0 0;"></div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#22D3EE;margin-bottom:16px;">03 / Indicator</div>
+        <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:8px;">Leadership Oscillator</h3>
+        <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:28px;">Standalone TradingView indicator. BB + RSI + Volume + Signal EMA.</p>
+        <div style="font-family:'Syne',sans-serif;font-size:44px;font-weight:800;color:#fff;letter-spacing:-2px;line-height:1;">$99<span style="font-size:18px;color:var(--muted);font-weight:400;">.99</span></div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin:8px 0 28px;">CAD / month</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:32px;">
+          <li style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);"><span style="color:#22D3EE;">✓</span> TradingView access</li>
+          <li style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);"><span style="color:#22D3EE;">✓</span> Bollinger Bands integrated</li>
+          <li style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);"><span style="color:#22D3EE;">✓</span> RSI + Volume confluence</li>
+          <li style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);"><span style="color:#22D3EE;">✓</span> Signal EMA overlay</li>
+          <li style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);"><span style="color:var(--muted);">✗</span> Daily bias analysis</li>
+        </ul>
+        <a href="#" class="btn-ghost" style="width:100%;text-align:center;display:block;border-color:rgba(34,211,238,0.3);color:#22D3EE;" onclick="alert('Stripe coming soon — contact us on Discord to subscribe!');return false;">Get Indicator →</a>
+      </div>
+
+    </div>
+
+    <div style="display:flex;justify-content:center;gap:48px;margin-top:56px;padding-top:40px;border-top:1px solid var(--border);flex-wrap:wrap;">
+      <div style="text-align:center;"><div style="font-size:22px;margin-bottom:8px;">🔒</div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);">Secure Payment</div></div>
+      <div style="text-align:center;"><div style="font-size:22px;margin-bottom:8px;">📅</div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);">Cancel Anytime</div></div>
+      <div style="text-align:center;"><div style="font-size:22px;margin-bottom:8px;">💬</div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);">Priority Support</div></div>
+      <div style="text-align:center;"><div style="font-size:22px;margin-bottom:8px;">📊</div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);">Proven Results</div></div>
+    </div>
+    <div style="margin-top:32px;padding:16px 20px;background:rgba(245,158,11,0.04);border:1px solid rgba(245,158,11,0.15);border-radius:2px;">
+      <p style="font-size:12px;color:rgba(245,158,11,0.7);line-height:1.6;">⚠️ Past performance does not guarantee future results. Trading involves significant risk of capital loss. All prices in CAD.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ INDICATOR ══ -->
+<div id="page-indicator" class="page">
+  <section style="max-width:1100px;">
+    <p class="section-tag">// TradingView Indicator</p>
+    <h2 class="section-title">Leadership<br><span style="background:linear-gradient(135deg,var(--purple-light),#22D3EE);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Oscillator</span></h2>
+    <p class="section-sub">A multi-confluence indicator combining Bollinger Bands, RSI, Volume and Signal EMA — built specifically for NQ futures traders.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:60px;">
+      <div style="background:var(--dark);border:1px solid var(--border);padding:36px 32px;position:relative;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#22D3EE,var(--purple));"></div>
+        <div style="font-size:28px;margin-bottom:16px;">📊</div>
+        <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:10px;">Bollinger Bands</h3>
+        <p style="font-size:14px;color:var(--muted);line-height:1.7;">Dynamic volatility bands that adapt to market conditions. Identify overextension and mean-reversion setups with precision.</p>
+      </div>
+      <div style="background:var(--dark);border:1px solid var(--border);padding:36px 32px;position:relative;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),#4ADE80);"></div>
+        <div style="font-size:28px;margin-bottom:16px;">⚡</div>
+        <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:10px;">RSI Confluence</h3>
+        <p style="font-size:14px;color:var(--muted);line-height:1.7;">Built-in RSI integration filters out low-probability signals. Only trade when momentum confirms the direction.</p>
+      </div>
+      <div style="background:var(--dark);border:1px solid var(--border);padding:36px 32px;position:relative;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#4ADE80,#22D3EE);"></div>
+        <div style="font-size:28px;margin-bottom:16px;">📈</div>
+        <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:10px;">Volume Analysis</h3>
+        <p style="font-size:14px;color:var(--muted);line-height:1.7;">Volume confirms institutional participation. Avoid false breakouts by requiring volume confirmation on every signal.</p>
+      </div>
+      <div style="background:var(--dark);border:1px solid var(--border);padding:36px 32px;position:relative;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#F59E0B,var(--purple));"></div>
+        <div style="font-size:28px;margin-bottom:16px;">🎯</div>
+        <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:10px;">Signal EMA</h3>
+        <p style="font-size:14px;color:var(--muted);line-height:1.7;">A smoothed EMA overlay that acts as a dynamic bias line. Trade above it for longs, below it for shorts.</p>
       </div>
     </div>
-    <div style="display:flex;justify-content:center;gap:40px;margin-top:48px;flex-wrap:wrap;">
-      <div style="text-align:center;"><div style="font-size:22px;margin-bottom:6px;">🔒</div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);">Secure Payment</div></div>
-      <div style="text-align:center;"><div style="font-size:22px;margin-bottom:6px;">📅</div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);">Cancel Anytime</div></div>
-      <div style="text-align:center;"><div style="font-size:22px;margin-bottom:6px;">💬</div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);">Support Available</div></div>
-      <div style="text-align:center;"><div style="font-size:22px;margin-bottom:6px;">📊</div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);">Transparent Results</div></div>
+
+    <div style="margin-top:60px;padding:48px;background:rgba(124,58,237,0.04);border:1px solid var(--border);border-radius:4px;">
+      <p class="section-tag">// How It Works</p>
+      <h3 style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:32px;">Three steps.<br>One clear signal.</h3>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;">
+        <div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;color:var(--purple-light);margin-bottom:10px;">01 / Read</div><p style="font-size:14px;color:var(--muted);line-height:1.7;">Check the ILO line vs the Signal EMA. Above = bullish. Below = bearish.</p></div>
+        <div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;color:var(--purple-light);margin-bottom:10px;">02 / Confirm</div><p style="font-size:14px;color:var(--muted);line-height:1.7;">Wait for RSI alignment and volume spike. No confluence = no trade.</p></div>
+        <div><div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;color:var(--purple-light);margin-bottom:10px;">03 / Execute</div><p style="font-size:14px;color:var(--muted);line-height:1.7;">Enter on BB band touch with confluence confirmed. Use the daily bias for directional context.</p></div>
+      </div>
     </div>
-  </div></div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:60px;">
+      <div style="background:var(--dark);border:1px solid var(--border);padding:40px;text-align:center;">
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;color:#22D3EE;margin-bottom:12px;">INDICATOR ONLY</div>
+        <div style="font-family:'Syne',sans-serif;font-size:48px;font-weight:800;color:#fff;letter-spacing:-2px;">$99<span style="font-size:18px;color:var(--muted);font-weight:400;">.99</span></div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;margin:6px 0 24px;">CAD / month</div>
+        <a href="#" class="btn-ghost" style="display:block;text-align:center;border-color:rgba(34,211,238,0.3);color:#22D3EE;" onclick="showPage('subscribe');return false;">Get Indicator →</a>
+      </div>
+      <div style="background:linear-gradient(145deg,#0F0F18,#0B0B0F);border:2px solid var(--purple);padding:40px;text-align:center;position:relative;">
+        <div style="position:absolute;top:-1px;right:24px;background:var(--purple);color:#fff;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;padding:4px 12px;border-radius:0 0 4px 4px;">BEST VALUE</div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--purple-light);margin-bottom:12px;">BIAS + INDICATOR</div>
+        <div style="font-family:'Syne',sans-serif;font-size:48px;font-weight:800;color:#fff;letter-spacing:-2px;">$299<span style="font-size:18px;color:var(--muted);font-weight:400;">.99</span></div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;margin:6px 0 4px;">CAD / month</div>
+        <div style="font-family:'DM Mono',monospace;font-size:11px;color:#4ADE80;margin-bottom:24px;">Save $49.99/mo</div>
+        <a href="#" class="btn-primary" style="display:block;text-align:center;" onclick="showPage('subscribe');return false;">Get Full Package →</a>
+      </div>
+    </div>
+  </section>
 </div>
 
 <!-- ══ CONTACT ══ -->
@@ -687,7 +834,7 @@ footer { border-top:1px solid var(--border);padding:40px 60px;display:flex;align
 
 <footer>
   <div class="footer-logo">Quantum<span>Bias</span></div>
-  <div class="footer-copy">© 2025 Quantum Bias · All rights reserved</div>
+  <div class="footer-copy">© 2026 Quantum Bias · All rights reserved</div>
   <div class="footer-disclaimer">Past performance does not guarantee future results. Trading involves significant risk of capital loss.</div>
 </footer>
 
@@ -696,7 +843,7 @@ function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
   document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-  const map = { home:0, results:1, about:2, contact:3, bias:4 };
+  const map = { home:0, results:1, indicator:2, about:3, contact:4, bias:5 };
   const links = document.querySelectorAll('.nav-links a');
   if (map[id] !== undefined && links[map[id]]) links[map[id]].classList.add('active');
   window.scrollTo({top:0, behavior:'smooth'});
